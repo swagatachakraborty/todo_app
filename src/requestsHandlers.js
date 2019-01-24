@@ -1,4 +1,5 @@
 const { getFilePath, send, redirectTo, parse } = require("./util");
+const { User } = require("./user");
 
 const readBody = function(req, res, next) {
   let content = "";
@@ -26,11 +27,21 @@ const serveFile = function(FILES_CACHE, req, res) {
   send(res, "404 Not found", 404);
 };
 
-const signUp = function(fs, users, req, res, next) {
-  let user = parse(req.body);
-  users.push(user);
+const signUp = function(fs, users, req, res) {
+  let { name, email, password } = parse(req.body);
+  let user = new User(name, email, password);
+  users[email] = user;
   fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
   redirectTo(res, "/");
 };
 
-module.exports = { serveFile, logger, readBody, signUp };
+const login = function(users, req, res) {
+  let { email, password } = parse(req.body);
+  users[email].__proto__ = User.prototype;
+  if (users[email].isValid(password)) {
+    redirectTo(res, "/todo.html");
+  }
+  redirectTo(res, "/");
+};
+
+module.exports = { serveFile, logger, readBody, signUp, login };
