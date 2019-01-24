@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 const getFilePath = function(url) {
   if (url == "/") {
     return "./public/login.html";
@@ -20,16 +18,15 @@ const logger = function(req, res, next) {
   next();
 };
 
-const serveFile = function(req, res) {
+const serveFile = function(FILES_CACHE, req, res) {
   let url = getFilePath(req.url);
 
-  fs.readFile(url, (err, data) => {
-    if (err) {
-      send(res, "404 Not found", 404);
-      return;
-    }
-    send(res, data);
-  });
+  if (FILES_CACHE[url]) {
+    send(res, FILES_CACHE[url]);
+    return;
+  }
+
+  send(res, "404 Not found", 404);
 };
 
 module.exports = { serveFile, logger };
