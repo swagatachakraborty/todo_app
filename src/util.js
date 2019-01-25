@@ -29,9 +29,14 @@ const parse = function(content) {
   return user;
 };
 
+const createUserInstance = function(User, { name, email, password }) {
+  return new User(name, email, password);
+};
+
 module.exports = {
   getFilePath,
   send,
   parse,
-  redirectTo
+  redirectTo,
+  createUserInstance
 };

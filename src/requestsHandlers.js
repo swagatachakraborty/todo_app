@@ -1,4 +1,10 @@
-const { getFilePath, send, redirectTo, parse } = require("./util");
+const {
+  getFilePath,
+  send,
+  redirectTo,
+  parse,
+  createUserInstance
+} = require("./util");
 const { User } = require("./user");
 
 const readBody = function(req, res, next) {
@@ -37,8 +43,11 @@ const signUp = function(fs, users, req, res) {
 
 const login = function(users, req, res) {
   let { email, password } = parse(req.body);
-  users[email].__proto__ = User.prototype;
-  if (users[email].isValid(password)) {
+  if (!users[email]) {
+    return redirectTo(res, "/signup.html");
+  }
+  let user = createUserInstance(User, users[email]);
+  if (user.isValid(password)) {
     redirectTo(res, "/todo.html");
   }
   redirectTo(res, "/");
