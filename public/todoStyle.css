@@ -1,0 +1,31 @@
+header {
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  background-color: green;
+  width: 1000px;
+  height: 700px;
+  margin: 0 auto;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.todo_lists {
+  width: 480px;
+  background-color: gray;
+  border: 1px solid black;
+}
+
+.create_todo {
+  width: 480px;
+  background-color: dimgray;
+  border: 1px solid black;
+}
