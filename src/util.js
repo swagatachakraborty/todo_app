@@ -25,12 +25,32 @@ const parse = function(content) {
     let [key, value] = element.split("=");
     user[key] = value;
   });
-
   return user;
 };
 
-const createUserInstance = function(User, { name, email, password }) {
-  return new User(name, email, password);
+const createInstanceOf = function(protoClass, object) {
+  object.__proto__ = protoClass.prototype;
+  return object;
+};
+
+const setCookie = function(res, email) {
+  res.setHeader("Set-Cookie", "email=" + email);
+};
+
+const isValidUser = function(User, users, req, res) {
+  let { email, password } = parse(req.body);
+  if (!users[email]) {
+    redirectTo(res, "/signup.html");
+    return false;
+  }
+
+  let user = createInstanceOf(User, users[email]);
+  if (!user.isValid(password)) {
+    redirectTo(res, "/login.html");
+    return false;
+  }
+
+  return true;
 };
 
 module.exports = {
@@ -38,5 +58,7 @@ module.exports = {
   send,
   parse,
   redirectTo,
-  createUserInstance
+  createInstanceOf,
+  setCookie,
+  isValidUser
 };

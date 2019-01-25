@@ -3,6 +3,7 @@ class User {
     this.name = name;
     this.email = email;
     this.password = password;
+    this.todoList = {};
   }
 
   getName() {
@@ -15,6 +16,18 @@ class User {
 
   isValid(enteredPassword) {
     return this.password == enteredPassword;
+  }
+
+  addTodo(todo) {
+    this.todoList[todo.title] = todo;
+  }
+
+  getTodoList() {
+    return this.todoList;
+  }
+
+  getTodo(title) {
+    return this.todoList[title];
   }
 }
 

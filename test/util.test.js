@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { getFilePath, parse } = require("../src/util");
+const { getFilePath, parse, setCookie } = require("../src/util");
 
 describe("getFilePath", function() {
   it("should give path of login.html when the url is /", function() {
@@ -21,5 +21,24 @@ describe("parse", function() {
     };
     let input = "name=abc&password=123abc";
     assert.deepEqual(parse(input), expectedOutput);
+  });
+});
+
+describe("setCookie", () => {
+  const res = {
+    headers: {
+      cookie: undefined
+    },
+    setHeader: function(key, value) {
+      if (key != "Set-Cookie") return;
+      this.headers.cookie = value;
+    }
+  };
+
+  it("should set the cookie to response headers", () => {
+    setCookie(res, "abc");
+    let expectedOutput = "email=abc";
+    let actual = res.headers.cookie;
+    assert.deepEqual(actual, expectedOutput);
   });
 });

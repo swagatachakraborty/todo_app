@@ -3,8 +3,11 @@ const {
   send,
   redirectTo,
   parse,
-  createUserInstance
+  createInstanceOf,
+  isValidUser,
+  setCookie
 } = require("./util");
+
 const { User } = require("./user");
 
 const readBody = function(req, res, next) {
@@ -20,6 +23,7 @@ const logger = function(req, res, next) {
   console.log("URL:", req.url);
   console.log("Method:", req.method);
   console.log("Body:", req.body);
+  console.log("Cookie:", req.headers.cookie);
   console.log("-------------------------------------------------------------");
   next();
 };
@@ -38,19 +42,14 @@ const signUp = function(fs, users, req, res) {
   let user = new User(name, email, password);
   users[email] = user;
   fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
-  redirectTo(res, "/");
+  redirectTo(res, "/login.html");
 };
 
 const login = function(users, req, res) {
-  let { email, password } = parse(req.body);
-  if (!users[email]) {
-    return redirectTo(res, "/signup.html");
-  }
-  let user = createUserInstance(User, users[email]);
-  if (user.isValid(password)) {
-    redirectTo(res, "/todo.html");
-  }
-  redirectTo(res, "/");
+  if (!isValidUser(User, users, req, res)) return;
+  const { email } = parse(req.body);
+  setCookie(res, email);
+  redirectTo(res, "/todo.html");
 };
 
 module.exports = { serveFile, logger, readBody, signUp, login };

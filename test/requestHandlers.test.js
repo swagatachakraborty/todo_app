@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { serveFile } = require("../src/requestsHandlers");
+const { serveFile, login, signUp } = require("../src/requestsHandlers");
 
 const files = {
   "./public/numbers": "0\n1\n2\n3\n4",
@@ -40,5 +40,97 @@ describe("serveFile", function() {
 
     req.url = "/abc";
     serveFile(files, req, res);
+  });
+});
+
+describe("login", () => {
+  const res = {
+    Location: undefined,
+    writeHead: function(code, obj) {
+      this.Location = obj.Location;
+    }
+  };
+
+  const req = {
+    body: undefined
+  };
+
+  const users = {
+    "swagata@gmail.com": {
+      name: "swagata",
+      email: "swagata@gmail.com",
+      password: "swagata",
+      todoList: {}
+    }
+  };
+
+  it("should redirect to signup.html if the given email is not registered", () => {
+    res.end = function() {
+      assert.equal(this.Location, "/signup.html");
+    };
+
+    req.body = "email=tushar&password=abc";
+
+    login(users, req, res);
+  });
+
+  it("should redirect to login.html if the given password wrong", () => {
+    res.end = function() {
+      assert.equal(this.Location, "/login.html");
+    };
+
+    req.body = "email=swagata@gmail.com&password=abc";
+
+    login(users, req, res);
+  });
+
+  it("should redirect to todo.html if login details are correct", () => {
+    res.end = function() {
+      assert.equal(this.Location, "/todo.html");
+    };
+
+    res.setHeader = function(key, val) {};
+
+    req.body = "email=swagata@gmail.com&password=swagata";
+
+    login(users, req, res);
+  });
+});
+
+describe("signup", () => {
+  it("should redirect to login.html", () => {
+    const res = {
+      Location: undefined,
+      writeHead: function(code, obj) {
+        this.Location = obj.Location;
+      }
+    };
+
+    const req = {
+      body: "name=rahul&email=rahul@gmail.com&password=rahul"
+    };
+
+    const expectedUser = {
+      "rahul@gmail.com": {
+        name: "rahul",
+        email: "rahul@gmail.com",
+        password: "rahul",
+        todoList: {}
+      }
+    };
+
+    const users = {};
+
+    const fs = {
+      writeFile: function(path, users, encoding, callback) {
+        assert.deepEqual(users, JSON.stringify(expectedUser));
+      }
+    };
+
+    res.end = function() {
+      assert.equal(this.Location, "/login.html");
+    };
+
+    signUp(fs, users, req, res);
   });
 });

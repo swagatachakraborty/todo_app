@@ -4,6 +4,16 @@ const { Todo } = require("../src/todo");
 const todo = new Todo("study", "javascript");
 
 describe("Todo", function() {
+  it("should make a empty description when no description is given.", function() {
+    let todo = new Todo("game");
+    assert.equal(todo.getDescription(), "");
+  });
+
+  it("should make a empty item list when no item is given.", function() {
+    let todo = new Todo("game");
+    assert.deepEqual(todo.getItems(), []);
+  });
+
   it("changeTitle: should change the existing todo title", function() {
     todo.changeTitle("language");
     assert.equal(todo.getTitle(), "language");
