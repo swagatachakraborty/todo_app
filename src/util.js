@@ -18,7 +18,7 @@ const redirectTo = function(res, location) {
   res.end();
 };
 
-const parse = function(content) {
+const parse = function(content = "") {
   let keyValPairs = content.split("&");
   let user = {};
   keyValPairs.forEach(element => {

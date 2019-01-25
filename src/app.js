@@ -9,7 +9,9 @@ const {
   signUp,
   login,
   serveFile,
-  addTodo
+  addTodo,
+  renderHome,
+  setCurrentUser
 } = require("./requestsHandlers");
 
 const FILES_CACHE = createCache(fs);
@@ -17,6 +19,7 @@ const app = new App();
 
 app.use(readBody);
 app.use(logger);
+app.get("/todo.html", renderHome.bind(null, FILES_CACHE, users));
 app.post("/signup", signUp.bind(null, fs, users));
 app.post("/login", login.bind(null, users));
 app.post("/createTodo", addTodo);

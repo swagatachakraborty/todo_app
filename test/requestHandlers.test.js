@@ -6,6 +6,8 @@ const files = {
   "./public/alphabet": "abcd"
 };
 
+// -----------------------------------------serveFile-------------------------------------------
+
 describe("serveFile", function() {
   const req = {};
   it("should serve the file content, status code as 200", function() {
@@ -43,18 +45,20 @@ describe("serveFile", function() {
   });
 });
 
+// -----------------------------------------login-------------------------------------------
+
+const res = {
+  Location: undefined,
+  writeHead: function(code, obj) {
+    this.Location = obj.Location;
+  }
+};
+
+const req = {
+  body: undefined
+};
+
 describe("login", () => {
-  const res = {
-    Location: undefined,
-    writeHead: function(code, obj) {
-      this.Location = obj.Location;
-    }
-  };
-
-  const req = {
-    body: undefined
-  };
-
   const users = {
     "swagata@gmail.com": {
       name: "swagata",
@@ -97,18 +101,11 @@ describe("login", () => {
   });
 });
 
+// -----------------------------------------signup-------------------------------------------
+
 describe("signup", () => {
   it("should redirect to login.html", () => {
-    const res = {
-      Location: undefined,
-      writeHead: function(code, obj) {
-        this.Location = obj.Location;
-      }
-    };
-
-    const req = {
-      body: "name=rahul&email=rahul@gmail.com&password=rahul"
-    };
+    req.body = "name=rahul&email=rahul@gmail.com&password=rahul";
 
     const expectedUser = {
       "rahul@gmail.com": {

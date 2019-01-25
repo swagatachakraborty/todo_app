@@ -1,1 +1,19 @@
-{}
+{
+  "tusharst30999%40gmail.com": {
+    "name": "Tushar",
+    "email": "tusharst30999%40gmail.com",
+    "password": "tu",
+    "todoList": {
+      "game": {
+        "title": "game",
+        "description": "some games",
+        "items": ["table tanis", "foosball"]
+      },
+      "study": {
+        "title": "study",
+        "description": "physics and chem",
+        "items": ["sub"]
+      }
+    }
+  }
+}

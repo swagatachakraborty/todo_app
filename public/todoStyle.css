@@ -6,7 +6,7 @@ header {
 .layout {
   display: flex;
   flex-direction: column;
-  background-color: green;
+  background-color: rgb(201, 193, 193);
   width: 1000px;
   height: 700px;
   margin: 0 auto;
@@ -20,12 +20,12 @@ main {
 
 .todo_lists {
   width: 480px;
-  background-color: gray;
+  background-color: lightgray;
   border: 1px solid black;
 }
 
 .create_todo {
   width: 480px;
-  background-color: dimgray;
+  background-color: lightgray;
   border: 1px solid black;
 }
