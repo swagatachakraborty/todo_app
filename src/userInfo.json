@@ -11,11 +11,9 @@
       },
       "study": {
         "title": "study",
-        "description": "physics and chem",
-        "items": ["sub"]
-      },
-      "Gym": { "title": "Gym", "description": "push ups", "items": [] },
-      "Singing": { "title": "Singing", "description": "classical", "items": [] }
+        "description": "physics",
+        "items": ["quantom mechanics", "sound"]
+      }
     }
   }
 }

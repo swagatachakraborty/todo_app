@@ -19,6 +19,12 @@ const todoListsHtml = function(user) {
   return withTags("div", todoLists);
 };
 
+const createItemsView = function(items) {
+  const withLi = items.map(element => withTags("li", element)).join("");
+  return withTags("ul", withLi);
+};
+
 module.exports = {
-  todoListsHtml
+  todoListsHtml,
+  createItemsView
 };

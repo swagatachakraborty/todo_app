@@ -18,7 +18,7 @@ const redirectTo = function(res, location) {
   res.end();
 };
 
-const decode = function(string) {
+const decode = function(string = "") {
   string = string.replace(/\+/g, " ");
   return decodeURIComponent(string);
 };
@@ -27,7 +27,7 @@ const parse = function(content = "") {
   let keyValPairs = content.split("&");
   let user = {};
   keyValPairs.forEach(element => {
-    let [key, value] = element.split("=");
+    const [key, value] = element.split("=");
     user[key] = decode(value);
   });
   return user;
@@ -38,8 +38,8 @@ const createInstanceOf = function(protoClass, object) {
   return object;
 };
 
-const setCookie = function(res, email) {
-  res.setHeader("Set-Cookie", "email=" + email);
+const setCookie = function(res, key, value) {
+  res.setHeader("Set-Cookie", key + "=" + value);
 };
 
 const isValidUser = function(User, users, req, res) {

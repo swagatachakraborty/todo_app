@@ -36,7 +36,7 @@ describe("setCookie", () => {
   };
 
   it("should set the cookie to response headers", () => {
-    setCookie(res, "abc");
+    setCookie(res, "email", "abc");
     let expectedOutput = "email=abc";
     let actual = res.headers.cookie;
     assert.deepEqual(actual, expectedOutput);

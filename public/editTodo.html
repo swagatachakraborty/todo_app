@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Todo</title>
+    <link rel="stylesheet" href="editTodo.css" />
+    <script src="./editTodo.js"></script>
+  </head>
+  <body>
+    <div class="layout">
+      <header><h1>TODO</h1></header>
+
+      <main>
+        <div class="form">
+          <table>
+            <tr>
+              <td>
+                <input
+                  name="newItem"
+                  id="newItem"
+                  placeholder="e.g. Pay bills"
+                />
+              </td>
+              <td><button type="button" id="add">Add</button></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="items_view">
+          <div id="title"><!--TITLE--></div>
+          <div id="desc"><!--DESCRIPTION--></div>
+          <hr />
+          <div id="items"><!--ITEMS--></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
