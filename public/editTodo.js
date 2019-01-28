@@ -1,5 +1,6 @@
 const addItem = function() {
   const newItem = document.getElementById("newItem");
+  if (!newItem.value) return;
   fetch("/addItem", {
     method: "POST",
     body: newItem.value

@@ -22,6 +22,14 @@ describe("parse", function() {
     let input = "name=abc&password=123abc";
     assert.deepEqual(parse(input), expectedOutput);
   });
+
+  it("should return object with empty string key with empty string as value", function() {
+    let expectedOutput = {
+      "": ""
+    };
+    let input = undefined;
+    assert.deepEqual(parse(input), expectedOutput);
+  });
 });
 
 describe("setCookie", () => {
@@ -44,9 +52,16 @@ describe("setCookie", () => {
 });
 
 describe("decode", () => {
-  it("behaviour", () => {
+  it("should decode the givn data when encoded string is given", () => {
     let string = "%40+%2C+%21+%28+%29";
     let expectedOutput = "@ , ! ( )";
+    let actual = decode(string);
+    assert.equal(actual, expectedOutput);
+  });
+
+  it("should return empty string when encoded string is not given", () => {
+    let string = undefined;
+    let expectedOutput = "";
     let actual = decode(string);
     assert.equal(actual, expectedOutput);
   });

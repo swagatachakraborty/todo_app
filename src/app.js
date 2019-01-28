@@ -25,8 +25,8 @@ app.use(logger);
 app.get("/todo.html", renderHome.bind(null, FILES_CACHE, users));
 app.post("/signup", signUp.bind(null, fs, users));
 app.post("/login", login.bind(null, users));
-app.post("/createTodo", addTodo.bind(null, fs, users));
-app.get("/editTodo.html", editTodo.bind(null, FILES_CACHE, fs));
+app.post("/createTodo", addTodo.bind(null, users));
+app.get("/editTodo.html", editTodo.bind(null, FILES_CACHE));
 app.post("/addItem", addItem);
 app.use(serveFile.bind(null, FILES_CACHE));
 

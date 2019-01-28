@@ -1,7 +1,7 @@
 const assert = require("assert");
-const { todoListsHtml } = require("../src/todoUtil");
+const { todoListsHtml, createItemsView } = require("../src/todoUtil");
 
-let user = {
+const user = {
   name: "tushar",
   email: "tusharst30999%40gmail.com",
   password: "tu",
@@ -25,8 +25,17 @@ describe("todoListsHtml", () => {
     expectedOutput += "<li>game<em><dt>some games</dt></em></li>";
     expectedOutput += "<li>study<em><dt>physics and chem</dt></em></li>";
     expectedOutput += "</ul></div>";
+    const actual = todoListsHtml(user);
+    console.log(actual);
+    assert.equal(actual, expectedOutput);
+  });
+});
 
-    let actual = todoListsHtml(user);
+describe("createItemsView", () => {
+  it("should return items in html list format", () => {
+    const expectedOutput = "<ul><li>item1</li><li>item2</li></ul>";
+    const items = ["item1", "item2"];
+    const actual = createItemsView(items);
     assert.equal(actual, expectedOutput);
   });
 });

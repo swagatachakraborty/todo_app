@@ -86,16 +86,15 @@ const renderHome = function(FILES_CACHE, users, req, res) {
   send(res, home);
 };
 
-const addTodo = function(fs, users, req, res) {
+const addTodo = function(users, req, res) {
   const { title, description } = parse(req.body);
   CURRENTUSER.addTodo(new Todo(title, description));
   users[CURRENTUSER.email] = CURRENTUSER;
   setCookie(res, "currentTodo", title);
-  // fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
   redirectTo(res, "/editTodo.html");
 };
 
-const editTodo = function(FILES_CACHE, fs, req, res) {
+const editTodo = function(FILES_CACHE, req, res) {
   const editTodoHtmlTemplate = FILES_CACHE["./public/editTodo.html"];
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
   const itemsView = createItemsView(currentTodo.items);
