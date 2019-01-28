@@ -1,8 +1,8 @@
 {
-  "tusharst30999%40gmail.com": {
-    "name": "Tushar",
-    "email": "tusharst30999%40gmail.com",
-    "password": "tu",
+  "swagata@gmail.com": {
+    "name": "Swagata Chakraborty",
+    "email": "swagata@gmail.com",
+    "password": "sw",
     "todoList": {
       "game": {
         "title": "game",
@@ -13,7 +13,9 @@
         "title": "study",
         "description": "physics and chem",
         "items": ["sub"]
-      }
+      },
+      "Gym": { "title": "Gym", "description": "push ups", "items": [] },
+      "Singing": { "title": "Singing", "description": "classical", "items": [] }
     }
   }
 }

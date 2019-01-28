@@ -10,8 +10,10 @@ const {
 
 const { todoListsHtml } = require("./todoUtil");
 const { User } = require("./user");
+const { Todo } = require("./todo");
+const users = require("./userInfo.json");
 
-let CURRENTUSER;
+let CURRENTUSER = new User();
 
 const setCurrentUser = function(users, req) {
   let { email } = parse(req.headers.cookie);
@@ -54,14 +56,14 @@ const signUp = function(fs, users, req, res) {
   redirectTo(res, "/login.html");
 };
 
-const login = function(users, req, res) {
+const login = function(req, res) {
   if (!isValidUser(User, users, req, res)) return;
   const { email } = parse(req.body);
   setCookie(res, email);
   redirectTo(res, "/todo.html");
 };
 
-const renderHome = function(FILES_CACHE, users, req, res, next) {
+const renderHome = function(FILES_CACHE, req, res, next) {
   setCurrentUser(users, req);
   let fileContent = FILES_CACHE["./public/todo.html"];
   if (!CURRENTUSER) {
@@ -72,6 +74,14 @@ const renderHome = function(FILES_CACHE, users, req, res, next) {
   send(res, home);
 };
 
+const addTodo = function(fs, req, res) {
+  const { title, description } = parse(req.body);
+  CURRENTUSER.addTodo(new Todo(title, description));
+  users[CURRENTUSER.email] = CURRENTUSER;
+  fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
+  redirectTo(res, "/todo.html");
+};
+
 module.exports = {
   serveFile,
   logger,
@@ -79,5 +89,7 @@ module.exports = {
   signUp,
   login,
   renderHome,
+  setCurrentUser,
+  addTodo,
   setCurrentUser
 };

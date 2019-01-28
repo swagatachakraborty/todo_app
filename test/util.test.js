@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { getFilePath, parse, setCookie } = require("../src/util");
+const { getFilePath, parse, setCookie, decode } = require("../src/util");
 
 describe("getFilePath", function() {
   it("should give path of login.html when the url is /", function() {
@@ -40,5 +40,14 @@ describe("setCookie", () => {
     let expectedOutput = "email=abc";
     let actual = res.headers.cookie;
     assert.deepEqual(actual, expectedOutput);
+  });
+});
+
+describe("decode", () => {
+  it("behaviour", () => {
+    let string = "%40+%2C+%21+%28+%29";
+    let expectedOutput = "@ , ! ( )";
+    let actual = decode(string);
+    assert.equal(actual, expectedOutput);
   });
 });
