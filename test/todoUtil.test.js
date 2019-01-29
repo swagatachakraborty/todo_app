@@ -25,15 +25,19 @@ describe("todoListsHtml", () => {
     expectedOutput +=
       '<li id="study">study<em><dt>physics and chem</dt></em></li>';
     const actual = todoListsHtml(user);
-    console.log(actual);
     assert.equal(actual, expectedOutput);
   });
 });
 
 describe("createItemsView", () => {
   it("should return items in html list format", () => {
-    const expectedOutput = "<ul><li>item1</li><li>item2</li></ul>";
-    const items = ["item1", "item2"];
+    const expectedOutput =
+      "<table><tr><td><input type='checkbox' id='item1' checked onclick='toggleState()' /></td><td>item1</td></tr><tr><td><input type='checkbox' id='item2' checked onclick='toggleState()' /></td><td>item2</td></tr></table>";
+    const items = {
+      item1: { value: "item1", status: "TODO" },
+      item2: { value: "item2", status: "DONE" }
+    };
+
     const actual = createItemsView(items);
     assert.equal(actual, expectedOutput);
   });

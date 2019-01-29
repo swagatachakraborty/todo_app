@@ -1,7 +1,7 @@
 const getFilePath = function(url) {
-  if (url == "/") {
-    return "./public/login.html";
-  }
+  // if (url == "/") {
+  //   return "./public/todo.html";
+  // }
   return "./public" + url;
 };
 
@@ -34,6 +34,7 @@ const parse = function(content = "") {
 };
 
 const createInstanceOf = function(protoClass, object) {
+  if (!object) return;
   object.__proto__ = protoClass.prototype;
   return object;
 };

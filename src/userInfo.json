@@ -1,1 +1,25 @@
-{"swagata@gmail.com":{"name":"Swagata Chakraborty","email":"swagata@gmail.com","password":"sw","todoList":{"game":{"title":"game","description":"some games","items":["table tanis","foosball","pay bills","push up","10:15"]},"study":{"title":"study","description":"physics","items":["quantom mechanics","sound","java script"]}}},"kannu@gmail.com":{"name":"kanni","email":"kannu@gmail.com","password":"kani","todoList":{}}}
+{
+  "swagata@gmail.com": {
+    "name": "Swagata Chakraborty",
+    "email": "swagata@gmail.com",
+    "password": "sw",
+    "todoList": {
+      "game": {
+        "title": "game",
+        "description": "some games",
+        "items": {
+          "table tennis": { "value": "table tennis", "status": false },
+          "foosball": { "value": "foosball", "status": true }
+        }
+      },
+      "study": {
+        "title": "study",
+        "description": "physics",
+        "items": {
+          "physics": { "value": "physics", "status": false },
+          "chem": { "value": "chem", "status": true }
+        }
+      }
+    }
+  }
+}

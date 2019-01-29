@@ -88,9 +88,9 @@ describe("login", () => {
     login(users, req, res);
   });
 
-  it("should redirect to todo.html if login details are correct", () => {
+  it("should redirect to home page if login details are correct", () => {
     res.end = function() {
-      assert.equal(this.Location, "/todo.html");
+      assert.equal(this.Location, "/");
     };
 
     res.setHeader = function(key, val) {};

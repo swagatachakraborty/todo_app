@@ -14,6 +14,14 @@ const addItem = function() {
     });
 };
 
+const toggleState = function() {
+  console.log(event.target.id);
+  fetch("/changeItemState", {
+    method: "POST",
+    body: event.target.id
+  });
+};
+
 window.onload = function() {
   document.getElementById("add").onclick = addItem;
 };

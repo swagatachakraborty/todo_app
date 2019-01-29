@@ -12,13 +12,9 @@ const {
 const { todoListsHtml, createItemsView } = require("./todoUtil");
 const { User } = require("./user");
 const { Todo } = require("./todo");
+const { Item } = require("./item");
 
-let CURRENTUSER = new User();
-
-const setCurrentUser = function(users, req) {
-  let email = req.cookies.email;
-  CURRENTUSER = createInstanceOf(User, users[email]);
-};
+let CURRENTUSER;
 
 const readBody = function(req, res, next) {
   let content = "";
@@ -29,24 +25,30 @@ const readBody = function(req, res, next) {
   });
 };
 
-const logger = function(req, res, next) {
-  console.log("URL:", req.url);
-  console.log("Method:", req.method);
-  console.log("Body:", req.body);
-  console.log("Cookie:", req.cookies);
-  // console.log("CURRENT USER:", CURRENTUSER);
-  console.log("-------------------------------------------------------------");
-  next();
-};
-
 const loadCookies = function(req, res, next) {
   const cookie = req.headers["cookie"];
   req.cookies = parseCookies(cookie);
   next();
 };
 
+const setCurrentUser = function(users, req, res, next) {
+  const email = req.cookies.email;
+  CURRENTUSER = createInstanceOf(User, users[email]) || new User();
+  next();
+};
+
+const logger = function(req, res, next) {
+  console.log("URL:", req.url);
+  console.log("Method:", req.method);
+  console.log("Body:", req.body);
+  console.log("Cookie:", req.cookies);
+  console.log("CURRENT USER:", CURRENTUSER.email);
+  console.log("-------------------------------------------------------------");
+  next();
+};
+
 const serveFile = function(FILES_CACHE, req, res) {
-  let url = getFilePath(req.url);
+  const url = getFilePath(req.url);
   if (FILES_CACHE[url]) {
     send(res, FILES_CACHE[url]);
     return;
@@ -66,15 +68,16 @@ const login = function(users, req, res) {
   if (!isValidUser(User, users, req, res)) return;
   const { email } = parse(req.body);
   setCookie(res, "email", email);
-  redirectTo(res, "/todo.html");
+  // setCurrentUser(users, email);
+  redirectTo(res, "/");
 };
 
 const renderHome = function(FILES_CACHE, users, req, res) {
-  setCurrentUser(users, req);
-  let fileContent = FILES_CACHE["./public/todo.html"];
-  if (!CURRENTUSER) {
+  if (!CURRENTUSER.email) {
     redirectTo(res, "/login.html");
+    return;
   }
+  const fileContent = FILES_CACHE["./public/todo.html"];
   const todoList = todoListsHtml(CURRENTUSER);
   const home = fileContent.replace("<!--TODOLIST-->", todoList);
   send(res, home);
@@ -101,9 +104,21 @@ const editTodo = function(FILES_CACHE, req, res) {
 
 const addItem = function(req, res) {
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
-  currentTodo.items.push(req.body);
+  const newItem = new Item(req.body);
+  currentTodo.items[req.body] = newItem;
   const content = createItemsView(currentTodo.items);
   send(res, content);
+};
+
+const getCurrentTodo = function(CURRENTUSER, req) {
+  const currentTodo = req.cookies.currentTodo;
+  return CURRENTUSER.todoList[currentTodo];
+};
+
+const changeItemState = function(req, res) {
+  const currentTodo = getCurrentTodo(CURRENTUSER, req);
+  const currentItem = createInstanceOf(Item, currentTodo.items[req.body]);
+  currentItem.toggleStatus();
 };
 
 module.exports = {
@@ -116,7 +131,8 @@ module.exports = {
   renderHome,
   setCurrentUser,
   addTodo,
-  setCurrentUser,
   editTodo,
-  addItem
+  addItem,
+  setCurrentUser,
+  changeItemState
 };

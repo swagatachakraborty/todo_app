@@ -44,6 +44,15 @@ main {
   color: aliceblue;
 }
 
+#items table {
+  width: 500px;
+}
+
+#items input {
+  width: 70px;
+  height: 30px;
+}
+
 .layout {
   background-color: rgb(201, 193, 193);
   width: 1000px;
