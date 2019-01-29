@@ -1,22 +1,27 @@
 const { createInstanceOf } = require("./util");
 
-const withTags = function(tag, content) {
+const withTags = function(tag, content, id) {
+  if (id) {
+    return `<${tag} id="${id}">${content}</${tag}>`;
+  }
   return `<${tag}>${content}</${tag}>`;
 };
 
 const todoListsHtml = function(user) {
-  let todoLists = "";
   let allTodoLists = Object.keys(user["todoList"]);
 
   let withLi = allTodoLists.map(element => {
     let withDt = withTags("dt", user.todoList[element].description);
     withDt = withTags("em", withDt);
-    let withLi = withTags("li", user.todoList[element].title + withDt);
+    let withLi = withTags(
+      "li",
+      user.todoList[element].title + withDt,
+      user.todoList[element].title
+    );
     return withLi;
   });
-  todoLists = withTags("ul", withLi.join(""));
 
-  return withTags("div", todoLists);
+  return withLi.join("");
 };
 
 const createItemsView = function(items) {

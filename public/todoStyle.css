@@ -3,6 +3,31 @@ header {
   border-bottom: 1px solid black;
 }
 
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+main li {
+  color: black;
+}
+
+main li:hover {
+  color: rgb(25, 5, 109);
+  font-size: 22px;
+  text-decoration: underline;
+}
+
+main dt {
+  font-size: 18px;
+}
+
+main dt:hover {
+  font-size: 18px;
+}
+
 .layout {
   display: flex;
   flex-direction: column;
@@ -10,12 +35,6 @@ header {
   width: 1000px;
   height: 700px;
   margin: 0 auto;
-}
-
-main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 }
 
 .todo_lists {

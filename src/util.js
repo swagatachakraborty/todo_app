@@ -58,6 +58,17 @@ const isValidUser = function(User, users, req, res) {
   return true;
 };
 
+const parseCookies = function(cookie) {
+  const cookies = {};
+  if (cookie) {
+    cookie.split("; ").forEach(element => {
+      const [name, value] = element.split("=");
+      cookies[name] = value;
+    });
+  }
+  return cookies;
+};
+
 module.exports = {
   getFilePath,
   send,
@@ -66,5 +77,6 @@ module.exports = {
   createInstanceOf,
   setCookie,
   isValidUser,
-  decode
+  decode,
+  parseCookies
 };

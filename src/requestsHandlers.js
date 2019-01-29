@@ -5,7 +5,8 @@ const {
   parse,
   createInstanceOf,
   isValidUser,
-  setCookie
+  setCookie,
+  parseCookies
 } = require("./util");
 
 const { todoListsHtml, createItemsView } = require("./todoUtil");
@@ -40,14 +41,7 @@ const logger = function(req, res, next) {
 
 const loadCookies = function(req, res, next) {
   const cookie = req.headers["cookie"];
-  const cookies = {};
-  if (cookie) {
-    cookie.split("; ").forEach(element => {
-      const [name, value] = element.split("=");
-      cookies[name] = value;
-    });
-  }
-  req.cookies = cookies;
+  req.cookies = parseCookies(cookie);
   next();
 };
 
@@ -82,7 +76,7 @@ const renderHome = function(FILES_CACHE, users, req, res) {
     redirectTo(res, "/login.html");
   }
   const todoList = todoListsHtml(CURRENTUSER);
-  const home = fileContent.replace("<!--REPLACE-->", todoList);
+  const home = fileContent.replace("<!--TODOLIST-->", todoList);
   send(res, home);
 };
 

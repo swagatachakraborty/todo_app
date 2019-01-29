@@ -21,10 +21,9 @@ const user = {
 
 describe("todoListsHtml", () => {
   it("should return html code for todo lists of user", () => {
-    let expectedOutput = "<div><ul>";
-    expectedOutput += "<li>game<em><dt>some games</dt></em></li>";
-    expectedOutput += "<li>study<em><dt>physics and chem</dt></em></li>";
-    expectedOutput += "</ul></div>";
+    let expectedOutput = '<li id="game">game<em><dt>some games</dt></em></li>';
+    expectedOutput +=
+      '<li id="study">study<em><dt>physics and chem</dt></em></li>';
     const actual = todoListsHtml(user);
     console.log(actual);
     assert.equal(actual, expectedOutput);
