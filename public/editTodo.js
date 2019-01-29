@@ -14,12 +14,24 @@ const addItem = function() {
     });
 };
 
-const toggleState = function() {
-  console.log(event.target.id);
+const toggleState = function(item) {
   fetch("/changeItemState", {
     method: "POST",
-    body: event.target.id
+    body: item
   });
+};
+
+const deleteItem = function(item) {
+  fetch("/deleteItem", {
+    method: "POST",
+    body: item
+  })
+    .then(res => {
+      return res.text();
+    })
+    .then(itemHtml => {
+      document.getElementById("items").innerHTML = itemHtml;
+    });
 };
 
 window.onload = function() {

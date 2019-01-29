@@ -25,14 +25,25 @@ describe("Todo", function() {
   });
 
   it("addItem: should change the existing description ", function() {
-    todo.addItem("read class");
-    let expectedOutput = ["read class"];
+    const item = {
+      value: "read class",
+      status: false
+    };
+
+    todo.addItem(item);
+
+    const expectedOutput = {
+      "read class": {
+        value: "read class",
+        status: false
+      }
+    };
     assert.deepEqual(todo.getItems(), expectedOutput);
   });
 
   it("deleteItem: should change the existing description ", function() {
     todo.deleteItem("read class");
-    let expectedOutput = [];
+    let expectedOutput = {};
     assert.deepEqual(todo.getItems(), expectedOutput);
   });
 });

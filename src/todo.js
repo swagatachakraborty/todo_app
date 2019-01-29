@@ -1,5 +1,5 @@
 class Todo {
-  constructor(title, description = "", items = []) {
+  constructor(title, description = "", items = {}) {
     this.title = title;
     this.description = description;
     this.items = items;
@@ -26,12 +26,11 @@ class Todo {
   }
 
   addItem(item) {
-    this.items.push(item);
+    this.items[item.value] = item;
   }
 
   deleteItem(item) {
-    let index = this.items.indexOf(item);
-    this.items.splice(index, 1);
+    delete this.items[item];
   }
 }
 

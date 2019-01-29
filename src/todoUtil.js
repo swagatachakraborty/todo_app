@@ -1,5 +1,3 @@
-const { createInstanceOf } = require("./util");
-
 const withTags = function(tag, content, attribute, value) {
   if (attribute) {
     return `<${tag} ${attribute}="${value}">${content}</${tag}>`;
@@ -9,37 +7,50 @@ const withTags = function(tag, content, attribute, value) {
 
 const todoListsHtml = function(user) {
   let allTodoLists = Object.keys(user["todoList"]);
-
-  let withLi = allTodoLists.map(element => {
-    let withDt = withTags("dt", user.todoList[element].description);
-    withDt = withTags("em", withDt);
-    let withLi = withTags(
-      "li",
-      user.todoList[element].title + withDt,
-      "id",
-      user.todoList[element].title
-    );
-    return withLi;
-  });
+  let withLi = allTodoLists.map(element =>
+    createListItem(user.todoList[element])
+  );
   return withLi.join("");
 };
 
+const createListItem = function(element) {
+  let withDt = withTags("dt", element.description);
+  withDt = withTags("em", withDt);
+  let withLi = withTags("li", element.title + withDt, "id", element.title);
+  return withLi;
+};
+
 const createItemsView = function(items) {
-  let allItems = Object.keys(items);
+  const allItems = Object.keys(items);
+  const rows = allItems.map(element => createRow(items[element]));
+  return withTags("table", rows.join(""));
+};
 
-  const withLi = allItems.map(element => {
-    let value = withTags("td", items[element].value);
-    let hasChecked = items[element].status ? "checked" : "unchecked";
-    let status = withTags(
-      "td",
-      `<input type='checkbox' id='${
-        items[element].value
-      }' ${hasChecked} onclick='toggleState()' />`
-    );
-    return withTags("tr", status + value);
-  });
+const createRow = function(element) {
+  const value = withTags("td", element.value);
+  const hasChecked = element.status ? "checked" : "unchecked";
 
-  return withTags("table", withLi.join(""));
+  const status = withTags(
+    "td",
+    `<input type='checkbox' id='${
+      element.value
+    }' ${hasChecked} onclick='toggleState("${element.value}")' />`
+  );
+
+  const editButton = withTags(
+    "td",
+    `<input type='button' value='edit' onclick='editItem("${
+      element.value
+    }")' />`
+  );
+
+  const deleteButton = withTags(
+    "td",
+    `<input type='button' value=&#128465 onclick='deleteItem("${
+      element.value
+    }")' />`
+  );
+  return withTags("tr", status + value + editButton + deleteButton);
 };
 
 module.exports = {

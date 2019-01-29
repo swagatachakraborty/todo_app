@@ -6,7 +6,8 @@ const {
   createInstanceOf,
   isValidUser,
   setCookie,
-  parseCookies
+  parseCookies,
+  getCurrentTodo
 } = require("./util");
 
 const { todoListsHtml, createItemsView } = require("./todoUtil");
@@ -57,8 +58,8 @@ const serveFile = function(FILES_CACHE, req, res) {
 };
 
 const signUp = function(fs, users, req, res) {
-  let { name, email, password } = parse(req.body);
-  let user = new User(name, email, password);
+  const { name, email, password } = parse(req.body);
+  const user = new User(name, email, password);
   users[email] = user;
   fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
   redirectTo(res, "/login.html");
@@ -68,11 +69,10 @@ const login = function(users, req, res) {
   if (!isValidUser(User, users, req, res)) return;
   const { email } = parse(req.body);
   setCookie(res, "email", email);
-  // setCurrentUser(users, email);
   redirectTo(res, "/");
 };
 
-const renderHome = function(FILES_CACHE, users, req, res) {
+const renderHome = function(FILES_CACHE, req, res) {
   if (!CURRENTUSER.email) {
     redirectTo(res, "/login.html");
     return;
@@ -103,22 +103,25 @@ const editTodo = function(FILES_CACHE, req, res) {
 };
 
 const addItem = function(req, res) {
-  const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
+  const selectedTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
+  const currentTodo = createInstanceOf(Todo, selectedTodo);
   const newItem = new Item(req.body);
-  currentTodo.items[req.body] = newItem;
+  currentTodo.addItem(newItem);
   const content = createItemsView(currentTodo.items);
   send(res, content);
-};
-
-const getCurrentTodo = function(CURRENTUSER, req) {
-  const currentTodo = req.cookies.currentTodo;
-  return CURRENTUSER.todoList[currentTodo];
 };
 
 const changeItemState = function(req, res) {
   const currentTodo = getCurrentTodo(CURRENTUSER, req);
   const currentItem = createInstanceOf(Item, currentTodo.items[req.body]);
   currentItem.toggleStatus();
+};
+
+const deleteItem = function(req, res) {
+  const currentTodo = createInstanceOf(Todo, getCurrentTodo(CURRENTUSER, req));
+  currentTodo.deleteItem(req.body);
+  const content = createItemsView(currentTodo.items);
+  send(res, content);
 };
 
 module.exports = {
@@ -134,5 +137,6 @@ module.exports = {
   editTodo,
   addItem,
   setCurrentUser,
-  changeItemState
+  changeItemState,
+  deleteItem
 };

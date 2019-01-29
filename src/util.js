@@ -1,7 +1,4 @@
 const getFilePath = function(url) {
-  // if (url == "/") {
-  //   return "./public/todo.html";
-  // }
   return "./public" + url;
 };
 
@@ -70,6 +67,11 @@ const parseCookies = function(cookie) {
   return cookies;
 };
 
+const getCurrentTodo = function(CURRENTUSER, req) {
+  const currentTodo = req.cookies.currentTodo;
+  return CURRENTUSER.todoList[currentTodo];
+};
+
 module.exports = {
   getFilePath,
   send,
@@ -79,5 +81,6 @@ module.exports = {
   setCookie,
   isValidUser,
   decode,
-  parseCookies
+  parseCookies,
+  getCurrentTodo
 };
