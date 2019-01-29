@@ -21,9 +21,7 @@ const user = {
 
 describe("todoListsHtml", () => {
   it("should return html code for todo lists of user", () => {
-    let expectedOutput = '<li id="game">game<em><dt>some games</dt></em></li>';
-    expectedOutput +=
-      '<li id="study">study<em><dt>physics and chem</dt></em></li>';
+    let expectedOutput = `<tr><td>&#128467</td><td id="game">game</td><td><td><input type='button' value=&#128465 onclick='deleteTodo("game")' /></td></td></tr><tr><td>&#128467</td><td id="study">study</td><td><td><input type='button' value=&#128465 onclick='deleteTodo("study")' /></td></td></tr>`;
     const actual = todoListsHtml(user);
     assert.equal(actual, expectedOutput);
   });

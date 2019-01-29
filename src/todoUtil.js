@@ -6,27 +6,39 @@ const withTags = function(tag, content, attribute, value) {
 };
 
 const todoListsHtml = function(user) {
-  let allTodoLists = Object.keys(user["todoList"]);
-  let withLi = allTodoLists.map(element =>
-    createListItem(user.todoList[element])
-  );
-  return withLi.join("");
+  const allTodoLists = Object.keys(user["todoList"]);
+
+  const todoList = allTodoLists.map(element => {
+    return createTitleRow(user.todoList[element]);
+  });
+
+  return todoList.join("");
 };
 
-const createListItem = function(element) {
-  let withDt = withTags("dt", element.description);
-  withDt = withTags("em", withDt);
-  let withLi = withTags("li", element.title + withDt, "id", element.title);
-  return withLi;
+const createTitleRow = function(element) {
+  const bullet = withTags("td", "&#128467");
+  const deleteButton = withTags(
+    "td",
+    `<input type='button' value=&#128465 onclick='deleteTodo("${
+      element.title
+    }")' />`
+  );
+
+  const todoTitle = withTags("td", element.title, "id", element.title);
+  const deleteTitle = withTags("td", deleteButton);
+
+  return withTags("tr", bullet + todoTitle + deleteTitle);
 };
+
+//-------------------------∏
 
 const createItemsView = function(items) {
   const allItems = Object.keys(items);
-  const rows = allItems.map(element => createRow(items[element]));
+  const rows = allItems.map(element => createItemRow(items[element]));
   return withTags("table", rows.join(""));
 };
 
-const createRow = function(element) {
+const createItemRow = function(element) {
   const value = withTags("td", element.value);
   const hasChecked = element.status ? "checked" : "unchecked";
 

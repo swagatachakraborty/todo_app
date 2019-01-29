@@ -77,10 +77,11 @@ const renderHome = function(FILES_CACHE, req, res) {
     redirectTo(res, "/login.html");
     return;
   }
+
   const fileContent = FILES_CACHE["./public/todo.html"];
   const todoList = todoListsHtml(CURRENTUSER);
-  const home = fileContent.replace("<!--TODOLIST-->", todoList);
-  send(res, home);
+  const homepage = fileContent.replace("<!--TODOLIST-->", todoList);
+  send(res, homepage);
 };
 
 const addTodo = function(users, req, res) {
@@ -124,6 +125,12 @@ const deleteItem = function(req, res) {
   send(res, content);
 };
 
+const deleteTodo = function(req, res) {
+  delete CURRENTUSER.todoList[req.body];
+  const todoListHtml = todoListsHtml(CURRENTUSER);
+  send(res, todoListHtml);
+};
+
 module.exports = {
   serveFile,
   logger,
@@ -138,5 +145,6 @@ module.exports = {
   addItem,
   setCurrentUser,
   changeItemState,
-  deleteItem
+  deleteItem,
+  deleteTodo
 };

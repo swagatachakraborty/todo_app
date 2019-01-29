@@ -10,24 +10,6 @@ main {
   font-size: 20px;
 }
 
-main li {
-  color: black;
-}
-
-main li:hover {
-  color: rgb(25, 5, 109);
-  font-size: 22px;
-  text-decoration: underline;
-}
-
-main dt {
-  font-size: 18px;
-}
-
-main dt:hover {
-  font-size: 18px;
-}
-
 .layout {
   display: flex;
   flex-direction: column;
@@ -41,10 +23,28 @@ main dt:hover {
   width: 480px;
   background-color: lightgray;
   border: 1px solid black;
+  padding: 5px;
+}
+
+.todo_lists table {
+  position: relative;
+  width: 100%;
+  margin: 10px;
+}
+
+.todo_lists td {
+  color: black;
+}
+
+.todo_lists td:hover {
+  color: rgb(25, 5, 109);
+  font-size: 22px;
+  text-decoration: underline;
 }
 
 .create_todo {
   width: 480px;
   background-color: lightgray;
   border: 1px solid black;
+  padding: 5px;
 }
