@@ -39,7 +39,7 @@ const createItemsView = function(items) {
 };
 
 const createItemRow = function(element) {
-  const value = withTags("td", element.value);
+  const value = withTags("td", element.value, "id", element.value + "Item");
   const hasChecked = element.status ? "checked" : "unchecked";
 
   const status = withTags(
@@ -53,7 +53,9 @@ const createItemRow = function(element) {
     "td",
     `<input type='button' value='edit' onclick='editItem("${
       element.value
-    }")' />`
+    }")' />`,
+    "id",
+    element.value + "Button"
   );
 
   const deleteButton = withTags(

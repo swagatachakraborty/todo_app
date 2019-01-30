@@ -34,6 +34,29 @@ const deleteItem = function(item) {
     });
 };
 
+const editItem = function(itemId) {
+  const inputField = `<input id="${itemId}Edit" value="${itemId}"/>`;
+  const saveButton = `<input type="button" value="Save" onclick='saveChanges("${itemId}")'/>`;
+
+  document.getElementById(itemId + "Item").innerHTML = inputField;
+  document.getElementById(itemId + "Button").innerHTML = saveButton;
+};
+
+const saveChanges = function(previous) {
+  console.log("in save changes");
+  const newItem = document.getElementById(previous + "Edit").value;
+  fetch("/changeItem", {
+    method: "POST",
+    body: `oldItem=${previous}&newItem=${newItem}`
+  })
+    .then(res => {
+      return res.text();
+    })
+    .then(itemHtml => {
+      document.getElementById("items").innerHTML = itemHtml;
+    });
+};
+
 window.onload = function() {
   document.getElementById("add").onclick = addItem;
 };

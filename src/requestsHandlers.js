@@ -131,6 +131,15 @@ const deleteTodo = function(req, res) {
   send(res, todoListHtml);
 };
 
+const changeItem = function(req, res) {
+  const { oldItem, newItem } = parse(req.body);
+  const currentTodo = createInstanceOf(Todo, getCurrentTodo(CURRENTUSER, req));
+  currentTodo.deleteItem(oldItem);
+  currentTodo.addItem(new Item(newItem));
+  const content = createItemsView(currentTodo.items);
+  send(res, content);
+};
+
 module.exports = {
   serveFile,
   logger,
@@ -146,5 +155,6 @@ module.exports = {
   setCurrentUser,
   changeItemState,
   deleteItem,
-  deleteTodo
+  deleteTodo,
+  changeItem
 };
