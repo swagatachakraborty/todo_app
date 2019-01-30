@@ -10,6 +10,32 @@ main {
   font-size: 20px;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: white;
+}
+
+.buttons {
+  width: 100px;
+  height: 38px;
+  margin-left: 0px;
+  font-size: 25px;
+}
+
+.buttons:hover {
+  background-color: dimgray;
+  color: aliceblue;
+}
+
+.heading table {
+  text-align: center;
+  width: 100%;
+}
+
 .layout {
   display: flex;
   flex-direction: column;

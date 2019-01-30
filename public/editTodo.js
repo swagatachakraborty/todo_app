@@ -1,9 +1,10 @@
 const addItem = function() {
   const newItem = document.getElementById("newItem");
-  if (!newItem.value) return;
+  const newItemValue = newItem.value.trim();
+  if (!newItemValue) return;
   fetch("/addItem", {
     method: "POST",
-    body: newItem.value
+    body: newItemValue
   })
     .then(response => {
       newItem.value = "";
@@ -43,7 +44,6 @@ const editItem = function(itemId) {
 };
 
 const saveChanges = function(previous) {
-  console.log("in save changes");
   const newItem = document.getElementById(previous + "Edit").value;
   fetch("/changeItem", {
     method: "POST",
@@ -55,6 +55,16 @@ const saveChanges = function(previous) {
     .then(itemHtml => {
       document.getElementById("items").innerHTML = itemHtml;
     });
+};
+
+const clearCookie = function() {
+  document.cookie = "email=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
+  document.cookie = "currentTodo=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
+  return true;
+};
+
+const saveTodo = function() {
+  fetch("/saveUser");
 };
 
 window.onload = function() {

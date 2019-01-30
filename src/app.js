@@ -18,7 +18,9 @@ const {
   changeItemState,
   deleteItem,
   deleteTodo,
-  changeItem
+  changeItem,
+  saveUser,
+  logout
 } = require("./requestsHandlers");
 
 const FILES_CACHE = createCache(fs);
@@ -38,6 +40,8 @@ app.post("/changeItemState", changeItemState);
 app.post("/deleteItem", deleteItem);
 app.post("/deleteTodo", deleteTodo);
 app.post("/changeItem", changeItem);
+app.post("/logout", logout);
+app.get("/saveUser", saveUser.bind(null, users, fs));
 app.use(serveFile.bind(null, FILES_CACHE));
 
 module.exports = app.handleRequests.bind(app);

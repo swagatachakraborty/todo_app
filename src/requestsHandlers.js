@@ -97,6 +97,7 @@ const editTodo = function(FILES_CACHE, req, res) {
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
   const itemsView = createItemsView(currentTodo.items);
   const todoHTML = editTodoHtmlTemplate
+    .replace("<!--USER-->", CURRENTUSER.name)
     .replace("<!--TITLE-->", currentTodo.title)
     .replace("<!--DESCRIPTION-->", currentTodo.description)
     .replace("<!--ITEMS-->", itemsView);
@@ -140,6 +141,17 @@ const changeItem = function(req, res) {
   send(res, content);
 };
 
+const saveUser = function(users, fs, req, res) {
+  users[CURRENTUSER.email] = CURRENTUSER;
+  fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
+  res.end();
+};
+
+const logout = function(req, res) {
+  res.setHeader("Set-Cookie", ["email=null", "currentTodo=null"]);
+  redirectTo(res, "/");
+};
+
 module.exports = {
   serveFile,
   logger,
@@ -156,5 +168,7 @@ module.exports = {
   changeItemState,
   deleteItem,
   deleteTodo,
-  changeItem
+  changeItem,
+  saveUser,
+  logout
 };

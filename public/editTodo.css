@@ -11,6 +11,20 @@ main {
   font-family: sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: white;
+}
+
+.heading table {
+  text-align: center;
+  width: 100%;
+}
+
 .form {
   background-color: rgb(142, 142, 142);
   height: 50px;
@@ -32,14 +46,14 @@ main {
   font-size: 25px;
 }
 
-.form button {
+.buttons {
   width: 100px;
   height: 38px;
   margin-left: 0px;
   font-size: 25px;
 }
 
-.form button:hover {
+.buttons:hover {
   background-color: dimgray;
   color: aliceblue;
 }
