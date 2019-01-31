@@ -11,6 +11,14 @@ class Item {
   toggleStatus() {
     this.status = !this.status;
   }
+
+  getValue() {
+    return this.value;
+  }
+
+  getStatus() {
+    return this.status;
+  }
 }
 
 module.exports = { Item };

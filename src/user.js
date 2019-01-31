@@ -29,6 +29,10 @@ class User {
   getTodo(title) {
     return this.todoList[title];
   }
+
+  deleteTodo(todoTitle) {
+    delete this.todoList[todoTitle];
+  }
 }
 
 module.exports = { User };

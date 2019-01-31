@@ -5,6 +5,14 @@ const withTags = function(tag, content, attribute, value) {
   return `<${tag}>${content}</${tag}>`;
 };
 
+const createButton = function(value, onclick) {
+  return `<input type='button' value=${value} onclick='${onclick}' />`;
+};
+
+const createCheckBox = function(id, hasChecked, onclick) {
+  return `<input type='checkbox' id='${id}' ${hasChecked} onclick='${onclick}' />`;
+};
+
 const todoListsHtml = function(user) {
   const allTodoLists = Object.keys(user["todoList"]);
 
@@ -17,16 +25,10 @@ const todoListsHtml = function(user) {
 
 const createTitleRow = function(element) {
   const bullet = withTags("td", "&#128467");
-  const deleteButton = withTags(
-    "td",
-    `<input type='button' value=&#128465 onclick='deleteTodo("${
-      element.title
-    }")' />`
-  );
-
+  const button = createButton(`&#12846`, `deleteTodo("${element.title}")`);
+  const deleteButton = withTags("td", button);
   const todoTitle = withTags("td", element.title, "id", element.title);
   const deleteTitle = withTags("td", deleteButton);
-
   return withTags("tr", bullet + todoTitle + deleteTitle);
 };
 
@@ -44,25 +46,19 @@ const createItemRow = function(element) {
 
   const status = withTags(
     "td",
-    `<input type='checkbox' id='${
-      element.value
-    }' ${hasChecked} onclick='toggleState("${element.value}")' />`
+    createCheckBox(element.value, hasChecked, `toggleState("${element.value}")`)
   );
 
   const editButton = withTags(
     "td",
-    `<input type='button' value='edit' onclick='editItem("${
-      element.value
-    }")' />`,
+    createButton(`Edit`, `editItem("${element.value}")`),
     "id",
     element.value + "Button"
   );
 
   const deleteButton = withTags(
     "td",
-    `<input type='button' value=&#128465 onclick='deleteItem("${
-      element.value
-    }")' />`
+    createButton(`&#12846`, `deleteItem("${element.value}")`)
   );
   return withTags("tr", status + value + editButton + deleteButton);
 };

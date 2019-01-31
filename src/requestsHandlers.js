@@ -43,7 +43,7 @@ const logger = function(req, res, next) {
   console.log("Method:", req.method);
   console.log("Body:", req.body);
   console.log("Cookie:", req.cookies);
-  console.log("CURRENT USER:", CURRENTUSER.email);
+  console.log("CURRENT USER:", CURRENTUSER.getEmail());
   console.log("-------------------------------------------------------------");
   next();
 };
@@ -73,21 +73,23 @@ const login = function(users, req, res) {
 };
 
 const renderHome = function(FILES_CACHE, req, res) {
-  if (!CURRENTUSER.email) {
+  if (!CURRENTUSER.getEmail()) {
     redirectTo(res, "/login.html");
     return;
   }
 
   const fileContent = FILES_CACHE["./public/todo.html"];
   const todoList = todoListsHtml(CURRENTUSER);
-  const homepage = fileContent.replace("<!--TODOLIST-->", todoList);
+  const homepage = fileContent
+    .replace("<!--TODOLIST-->", todoList)
+    .replace("<!--USER-->", CURRENTUSER.getName());
   send(res, homepage);
 };
 
 const addTodo = function(users, req, res) {
   const { title, description } = parse(req.body);
   CURRENTUSER.addTodo(new Todo(title, description));
-  users[CURRENTUSER.email] = CURRENTUSER;
+  users[CURRENTUSER.getEmail()] = CURRENTUSER;
   setCookie(res, "currentTodo", title);
   redirectTo(res, "/editTodo.html");
 };
@@ -97,7 +99,7 @@ const editTodo = function(FILES_CACHE, req, res) {
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
   const itemsView = createItemsView(currentTodo.items);
   const todoHTML = editTodoHtmlTemplate
-    .replace("<!--USER-->", CURRENTUSER.name)
+    .replace("<!--USER-->", CURRENTUSER.getName())
     .replace("<!--TITLE-->", currentTodo.title)
     .replace("<!--DESCRIPTION-->", currentTodo.description)
     .replace("<!--ITEMS-->", itemsView);
@@ -142,7 +144,7 @@ const changeItem = function(req, res) {
 };
 
 const saveUser = function(users, fs, req, res) {
-  users[CURRENTUSER.email] = CURRENTUSER;
+  users[CURRENTUSER.getEmail()] = CURRENTUSER;
   fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
   res.end();
 };

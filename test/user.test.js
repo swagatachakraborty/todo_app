@@ -16,13 +16,13 @@ describe("isValid", function() {
 
 describe("addTodo", function() {
   it("should add todo to the user todo object", function() {
-    let todo = new Todo("game", "cricket", ["practice"]);
+    const todo = new Todo("game", "cricket");
 
-    let expectedOutput = {
+    const expectedOutput = {
       game: {
         title: "game",
         description: "cricket",
-        items: ["practice"]
+        items: {}
       }
     };
 
@@ -33,17 +33,34 @@ describe("addTodo", function() {
 
 describe("getTodo", function() {
   it("should give the specified todo object", function() {
-    let todo1 = new Todo("game", "cricket", ["practice"]);
-    let todo2 = new Todo("study", "java", ["class"]);
-
-    let expectedOutput = {
+    const todo1 = new Todo("game", "cricket");
+    const todo2 = new Todo("study", "java");
+    const expectedOutput = {
       title: "game",
       description: "cricket",
-      items: ["practice"]
+      items: {}
     };
 
     user.addTodo(todo1);
     user.addTodo(todo2);
+    assert.deepEqual(user.getTodo("game"), expectedOutput);
+  });
+});
+
+describe("deleteTodo", function() {
+  it("should delete the specified todo object", function() {
+    const todo1 = new Todo("game", "cricket");
+    const todo2 = new Todo("study", "java");
+
+    const expectedOutput = {
+      title: "game",
+      description: "cricket",
+      items: {}
+    };
+
+    user.addTodo(todo1);
+    user.addTodo(todo2);
+    user.deleteTodo("study");
     assert.deepEqual(user.getTodo("game"), expectedOutput);
   });
 });

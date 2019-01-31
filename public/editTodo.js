@@ -57,12 +57,6 @@ const saveChanges = function(previous) {
     });
 };
 
-const clearCookie = function() {
-  document.cookie = "email=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
-  document.cookie = "currentTodo=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
-  return true;
-};
-
 const saveTodo = function() {
   fetch("/saveUser");
 };

@@ -1,8 +1,8 @@
 class Todo {
-  constructor(title, description = "", items = {}) {
+  constructor(title, description = "") {
     this.title = title;
     this.description = description;
-    this.items = items;
+    this.items = {};
   }
 
   getTitle() {

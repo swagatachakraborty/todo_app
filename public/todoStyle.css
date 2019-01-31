@@ -20,10 +20,10 @@ a:hover {
 }
 
 .buttons {
-  width: 100px;
-  height: 38px;
+  width: 80px;
+  height: 25px;
   margin-left: 0px;
-  font-size: 25px;
+  font-size: 17px;
 }
 
 .buttons:hover {
@@ -34,6 +34,13 @@ a:hover {
 .heading table {
   text-align: center;
   width: 100%;
+}
+
+.heading button {
+  width: 100px;
+  height: 38px;
+  margin-left: 0px;
+  font-size: 25px;
 }
 
 .layout {
