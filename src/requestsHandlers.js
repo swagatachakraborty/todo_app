@@ -4,7 +4,7 @@ const {
   redirectTo,
   parse,
   createInstanceOf,
-  isValidUser,
+  isInvalidPassWord,
   setCookie,
   parseCookies,
   getCurrentTodo
@@ -14,6 +14,15 @@ const { todoListsHtml, createItemsView } = require("./todoUtil");
 const { User } = require("./user");
 const { Todo } = require("./todo");
 const { Item } = require("./item");
+
+const LOGIN_PAGE = "./public/login.html";
+const SIGNUP_PAGE = "./public/signup.html";
+const ACCOUNT_NOT_FOUND = "Account not found. Sign up.";
+const ACCOUNT_ALREADY_EXISTS = "Account already exist. Log in.";
+const INVALID_PASSWORD = "Password is incorrect.";
+const USER_INFO = "./src/userInfo.json";
+const TODO_HOME = "./public/todo.html";
+const EDIT_TODO = "./public/editTodo.html";
 
 let CURRENTUSER;
 
@@ -57,17 +66,35 @@ const serveFile = function(FILES_CACHE, req, res) {
   send(res, "404 Not found", 404);
 };
 
-const signUp = function(fs, users, req, res) {
+const signUp = function(FILES_CACHE, fs, users, req, res) {
   const { name, email, password } = parse(req.body);
   const user = new User(name, email, password);
+  const signupHtml = FILES_CACHE[SIGNUP_PAGE];
+
+  if (users[email]) {
+    send(res, signupHtml.replace("<!--ERROR-->", ACCOUNT_ALREADY_EXISTS));
+    return;
+  }
+
   users[email] = user;
-  fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
+  fs.writeFile(USER_INFO, JSON.stringify(users), "utf8", err => {});
   redirectTo(res, "/login.html");
 };
 
-const login = function(users, req, res) {
-  if (!isValidUser(User, users, req, res)) return;
-  const { email } = parse(req.body);
+const login = function(FILES_CACHE, users, req, res) {
+  let loginHtml = FILES_CACHE[LOGIN_PAGE];
+  const { email, password } = parse(req.body);
+
+  if (!users[email]) {
+    send(res, loginHtml.replace("<!--ERROR-->", ACCOUNT_NOT_FOUND));
+    return;
+  }
+
+  if (isInvalidPassWord(User, users[email], password)) {
+    send(res, loginHtml.replace("<!--ERROR-->", INVALID_PASSWORD));
+    return;
+  }
+
   setCookie(res, "email", email);
   redirectTo(res, "/");
 };
@@ -78,7 +105,7 @@ const renderHome = function(FILES_CACHE, req, res) {
     return;
   }
 
-  const fileContent = FILES_CACHE["./public/todo.html"];
+  const fileContent = FILES_CACHE[TODO_HOME];
   const todoList = todoListsHtml(CURRENTUSER);
   const homepage = fileContent
     .replace("<!--TODOLIST-->", todoList)
@@ -95,7 +122,7 @@ const addTodo = function(users, req, res) {
 };
 
 const editTodo = function(FILES_CACHE, req, res) {
-  const editTodoHtmlTemplate = FILES_CACHE["./public/editTodo.html"];
+  const editTodoHtmlTemplate = FILES_CACHE[EDIT_TODO];
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
   const itemsView = createItemsView(currentTodo.items);
   const todoHTML = editTodoHtmlTemplate
@@ -145,12 +172,15 @@ const changeItem = function(req, res) {
 
 const saveUser = function(users, fs, req, res) {
   users[CURRENTUSER.getEmail()] = CURRENTUSER;
-  fs.writeFile("./src/userInfo.json", JSON.stringify(users), "utf8", err => {});
+  fs.writeFile(USER_INFO, JSON.stringify(users), "utf8", err => {});
   res.end();
 };
 
 const logout = function(req, res) {
-  res.setHeader("Set-Cookie", ["email=null", "currentTodo=null"]);
+  res.setHeader("Set-Cookie", [
+    "email=;expires=Thu, 01 Jan 1970 00:00:00 UTC",
+    "currentTodo=;expires=Thu, 01 Jan 1970 00:00:00 UTC"
+  ]);
   redirectTo(res, "/");
 };
 

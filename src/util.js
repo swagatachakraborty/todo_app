@@ -40,19 +40,9 @@ const setCookie = function(res, key, value) {
   res.setHeader("Set-Cookie", key + "=" + value);
 };
 
-const isValidUser = function(User, users, req, res) {
-  let { email, password } = parse(req.body);
-  if (!users[email]) {
-    redirectTo(res, "/signup.html");
-    return false;
-  }
-
-  let user = createInstanceOf(User, users[email]);
-  if (!user.isValid(password)) {
-    redirectTo(res, "/login.html");
-    return false;
-  }
-
+const isInvalidPassWord = function(User, userObj, password) {
+  let user = createInstanceOf(User, userObj);
+  if (user.isValid(password)) return false;
   return true;
 };
 
@@ -79,8 +69,8 @@ module.exports = {
   redirectTo,
   createInstanceOf,
   setCookie,
-  isValidUser,
   decode,
   parseCookies,
-  getCurrentTodo
+  getCurrentTodo,
+  isInvalidPassWord
 };

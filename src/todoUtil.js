@@ -25,7 +25,7 @@ const todoListsHtml = function(user) {
 
 const createTitleRow = function(element) {
   const bullet = withTags("td", "&#128467");
-  const button = createButton(`&#12846`, `deleteTodo("${element.title}")`);
+  const button = createButton(`&#128465`, `deleteTodo("${element.title}")`);
   const deleteButton = withTags("td", button);
   const todoTitle = withTags("td", element.title, "id", element.title);
   const deleteTitle = withTags("td", deleteButton);
@@ -58,7 +58,7 @@ const createItemRow = function(element) {
 
   const deleteButton = withTags(
     "td",
-    createButton(`&#12846`, `deleteItem("${element.value}")`)
+    createButton(`&#128465`, `deleteItem("${element.value}")`)
   );
   return withTags("tr", status + value + editButton + deleteButton);
 };

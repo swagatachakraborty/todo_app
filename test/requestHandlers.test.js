@@ -3,7 +3,9 @@ const { serveFile, login, signUp } = require("../src/requestsHandlers");
 
 const files = {
   "./public/numbers": "0\n1\n2\n3\n4",
-  "./public/alphabet": "abcd"
+  "./public/alphabet": "abcd",
+  "./public/login.html": "<!--ERROR-->",
+  "./public/signup.html": "<!--ERROR-->"
 };
 
 // -----------------------------------------serveFile-------------------------------------------
@@ -68,24 +70,28 @@ describe("login", () => {
     }
   };
 
-  it("should redirect to signup.html if the given email is not registered", () => {
-    res.end = function() {
-      assert.equal(this.Location, "/signup.html");
+  it("should give Account not found error if the given email is not registered", () => {
+    res.end = function() {};
+
+    res.write = function(content) {
+      assert.equal(content, "Account not found. Sign up.");
     };
 
     req.body = "email=tushar&password=abc";
 
-    login(users, req, res);
+    login(files, users, req, res);
   });
 
-  it("should redirect to login.html if the given password wrong", () => {
-    res.end = function() {
-      assert.equal(this.Location, "/login.html");
+  it("should give wrong password error if the given password wrong", () => {
+    res.end = function() {};
+
+    res.write = function(content) {
+      assert.equal(content, "Password is incorrect.");
     };
 
     req.body = "email=swagata@gmail.com&password=abc";
 
-    login(users, req, res);
+    login(files, users, req, res);
   });
 
   it("should redirect to home page if login details are correct", () => {
@@ -97,7 +103,7 @@ describe("login", () => {
 
     req.body = "email=swagata@gmail.com&password=swagata";
 
-    login(users, req, res);
+    login((FILES_CACHE = ""), users, req, res);
   });
 });
 
@@ -128,6 +134,25 @@ describe("signup", () => {
       assert.equal(this.Location, "/login.html");
     };
 
-    signUp(fs, users, req, res);
+    signUp(files, fs, users, req, res);
+  });
+
+  it("should give error when user is already exists", () => {
+    req.body = "name=rahul&email=rahul@gmail.com&password=rahul";
+
+    const users = {
+      "rahul@gmail.com": {
+        name: "rahul",
+        email: "rahul@gmail.com",
+        password: "rahul",
+        todoList: {}
+      }
+    };
+    const fs = {};
+    res.write = function(content) {
+      assert.equal(content, "Account already exist. Log in.");
+    };
+
+    signUp(files, fs, users, req, res);
   });
 });
