@@ -4,7 +4,7 @@
     <title>TODO</title>
     <link rel="stylesheet" href="/todoStyle.css" />
     <script src="/todoHome.js"></script>
-    <script src="/editTodo.js"></script>
+    <!-- <script src="/editTodo.js"></script> -->
   </head>
   <body>
     <div class="layout">
@@ -29,9 +29,17 @@
           <strong>Your Todo Lists :</strong>
 
           <div id="todo_lists">
-            <table id="todo_list" onclick="displayEditTodo()">
-              <!--TODOLIST-->
-            </table>
+            <form action="/setCurrentTodo" method="POST" id="todoListForm">
+              <input
+                type="hidden"
+                name="currentTodo"
+                value=""
+                id="currentTodo"
+              />
+              <table id="todo_list" onclick="displayEditTodo()">
+                <!--TODOLIST-->
+              </table>
+            </form>
           </div>
           <button class="buttons" id="save" onclick="saveTodo()">Save</button>
         </section>

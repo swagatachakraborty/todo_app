@@ -12,14 +12,13 @@ const createButton = function(value, onclick) {
 const createCheckBox = function(id, hasChecked, onclick) {
   return `<input type='checkbox' id='${id}' ${hasChecked} onclick='${onclick}' />`;
 };
+//-------------------------------------------- todo.html todo-list
 
 const todoListsHtml = function(user) {
   const allTodoLists = Object.keys(user["todoList"]);
-
   const todoList = allTodoLists.map(element => {
     return createTitleRow(user.todoList[element]);
   });
-
   return todoList.join("");
 };
 
@@ -32,7 +31,7 @@ const createTitleRow = function(element) {
   return withTags("tr", bullet + todoTitle + deleteTitle);
 };
 
-//-------------------------∏
+//-------------------------------------------- editTodo.html item-list
 
 const createItemsView = function(items) {
   const allItems = Object.keys(items);

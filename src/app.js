@@ -15,6 +15,7 @@ const {
   editTodo,
   addItem,
   setCurrentUser,
+  setCurrentTodo,
   changeItemState,
   deleteItem,
   deleteTodo,
@@ -35,6 +36,7 @@ app.post("/signup", signUp.bind(null, FILES_CACHE, fs, users));
 app.post("/login", login.bind(null, FILES_CACHE, users));
 app.post("/createTodo", addTodo.bind(null, users));
 app.get("/editTodo.html", editTodo.bind(null, FILES_CACHE));
+app.post("/setCurrentTodo", setCurrentTodo);
 app.post("/addItem", addItem);
 app.post("/changeItemState", changeItemState);
 app.post("/deleteItem", deleteItem);

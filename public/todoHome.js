@@ -1,8 +1,8 @@
 const displayEditTodo = function() {
   const clickedTodo = event.target.id;
   if (!clickedTodo || clickedTodo == "todo_list") return;
-  document.cookie = "currentTodo=" + clickedTodo;
-  location.href = "/editTodo.html";
+  document.getElementById("currentTodo").value = clickedTodo;
+  document.getElementById("todoListForm").submit();
 };
 
 const deleteTodo = function(todo) {

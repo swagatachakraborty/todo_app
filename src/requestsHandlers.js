@@ -184,6 +184,12 @@ const logout = function(req, res) {
   redirectTo(res, "/");
 };
 
+const setCurrentTodo = function(req, res) {
+  const { currentTodo } = parse(req.body);
+  res.setHeader("Set-Cookie", `currentTodo=${currentTodo}`);
+  redirectTo(res, "/editTodo.html");
+};
+
 module.exports = {
   serveFile,
   logger,
@@ -202,5 +208,6 @@ module.exports = {
   deleteTodo,
   changeItem,
   saveUser,
-  logout
+  logout,
+  setCurrentTodo
 };
