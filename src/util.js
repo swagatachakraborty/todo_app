@@ -25,7 +25,7 @@ const parse = function(content = "") {
   let user = {};
   keyValPairs.forEach(element => {
     const [key, value] = element.split("=");
-    user[key] = decode(value);
+    user[key.trim()] = decode(value).trim();
   });
   return user;
 };

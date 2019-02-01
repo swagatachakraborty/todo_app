@@ -60,7 +60,3 @@ const saveChanges = function(previous) {
 const saveTodo = function() {
   fetch("/saveUser");
 };
-
-window.onload = function() {
-  document.getElementById("add").onclick = addItem;
-};

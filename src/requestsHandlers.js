@@ -24,7 +24,7 @@ const USER_INFO = "./src/userInfo.json";
 const TODO_HOME = "./public/todo.html";
 const EDIT_TODO = "./public/editTodo.html";
 
-let CURRENTUSER;
+let CURRENTUSER = new User();
 
 const readBody = function(req, res, next) {
   let content = "";
@@ -122,9 +122,15 @@ const addTodo = function(users, req, res) {
 };
 
 const editTodo = function(FILES_CACHE, req, res) {
+  if (Object.keys(req.cookies).length < 2) {
+    redirectTo(res, "/");
+    return;
+  }
+
   const editTodoHtmlTemplate = FILES_CACHE[EDIT_TODO];
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
   const itemsView = createItemsView(currentTodo.items);
+
   const todoHTML = editTodoHtmlTemplate
     .replace("<!--USER-->", CURRENTUSER.getName())
     .replace("<!--TITLE-->", currentTodo.title)
