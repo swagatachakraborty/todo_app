@@ -7,6 +7,7 @@ const {
   readBody,
   logger,
   loadCookies,
+  checkSession,
   signUp,
   login,
   serveFile,
@@ -29,6 +30,7 @@ const app = new App();
 
 app.use(readBody);
 app.use(loadCookies);
+app.use(checkSession);
 app.use(setCurrentUser.bind(null, users));
 app.use(logger);
 app.get("/", renderHome.bind(null, FILES_CACHE));

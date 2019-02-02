@@ -41,6 +41,27 @@ const loadCookies = function(req, res, next) {
   next();
 };
 
+const checkSession = function(req, res, next) {
+  if (
+    req.url == "/login.html" ||
+    req.url == "/" ||
+    req.url == "/style.css" ||
+    req.url == "/signup.html" ||
+    req.url == "/favicon.ico" ||
+    req.url == "/login"
+  ) {
+    next();
+    return;
+  }
+
+  if (!Object.keys(req.cookies).length) {
+    redirectTo(res, "/");
+    return;
+  }
+
+  next();
+};
+
 const setCurrentUser = function(users, req, res, next) {
   const email = req.cookies.email;
   CURRENTUSER = createInstanceOf(User, users[email]) || new User();
@@ -122,11 +143,6 @@ const addTodo = function(users, req, res) {
 };
 
 const editTodo = function(FILES_CACHE, req, res) {
-  if (Object.keys(req.cookies).length < 2) {
-    redirectTo(res, "/");
-    return;
-  }
-
   const editTodoHtmlTemplate = FILES_CACHE[EDIT_TODO];
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
   const itemsView = createItemsView(currentTodo.items);
@@ -200,6 +216,7 @@ module.exports = {
   serveFile,
   logger,
   loadCookies,
+  checkSession,
   readBody,
   signUp,
   login,
