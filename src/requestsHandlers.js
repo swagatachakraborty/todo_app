@@ -43,19 +43,20 @@ const loadCookies = function(req, res, next) {
 
 const checkSession = function(req, res, next) {
   if (
-    req.url == "/login.html" ||
     req.url == "/" ||
-    req.url == "/style.css" ||
+    req.url == "/login.html" ||
     req.url == "/signup.html" ||
+    req.url == "/style.css" ||
     req.url == "/favicon.ico" ||
-    req.url == "/login"
+    req.url == "/login" ||
+    req.url == "/signup"
   ) {
     next();
     return;
   }
 
-  if (!Object.keys(req.cookies).length) {
-    redirectTo(res, "/");
+  if (!req.cookies["email"]) {
+    logout(req, res);
     return;
   }
 
@@ -143,6 +144,11 @@ const addTodo = function(users, req, res) {
 };
 
 const editTodo = function(FILES_CACHE, req, res) {
+  if (!req.cookies["currentTodo"]) {
+    redirectTo(res, "/");
+    return;
+  }
+
   const editTodoHtmlTemplate = FILES_CACHE[EDIT_TODO];
   const currentTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
   const itemsView = createItemsView(currentTodo.items);
