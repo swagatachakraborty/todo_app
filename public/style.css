@@ -1,39 +1,125 @@
-header {
-  text-align: center;
-}
-
+html,
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.form {
-  margin-top: 300px;
-  width: 480px;
-  margin: 0 auto;
-  padding: 20px;
-  align-content: center;
-  background-color: gray;
-  font-family: sans-serif;
-  font-size: 23px;
-}
-table {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0px;
   width: 100%;
-  margin: 0 auto;
+  height: 100%;
 }
 
-td {
-  height: 40px;
-  text-align: center;
+main {
+  width: 100%;
+  height: 90%;
 }
 
-#message {
+header {
+  height: 10%;
+  width: 100%;
+
+  font-size: 70px;
+  font-family: inherit;
+  font: bold;
+
+  background-color: #e0ca85;
+
+  border-bottom: 1px solid #6a571e;
+  padding-left: 10px;
+}
+
+.image-and-form {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+}
+
+.image-div {
+  width: 65%;
+  height: 100%;
+
+  background-image: url("todo.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.login-div {
+  width: 35%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.login-heading {
+  font-size: 28px;
+  font-family: inherit;
+}
+
+.error {
+  margin-bottom: 8px;
   color: red;
+}
+
+.login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 450px;
+  height: 450px;
+  box-shadow: 0px 0px 16px -1.65px rgba(163, 157, 45, 1);
+  background-color: #dff2d8;
+}
+
+.textboxes {
+  width: 400px;
+  height: 60px;
+
+  font-family: inherit;
+  font-size: 25px;
+
+  padding-left: 10px;
+  border: none;
+  border-radius: 10px;
+}
+
+.textboxes:focus {
+  outline: none;
+  border: 2px solid #e1bc29;
+}
+
+.buttons {
+  width: 400px;
+  height: 60px;
+
+  font-family: inherit;
+  font-size: 25px;
+  border-radius: 40px;
+  background-color: #e1bc29;
+}
+
+.buttons:hover {
+  border: none;
+  cursor: pointer;
+
+  background-color: #d3aa08;
+}
+
+.buttons:focus {
+  outline: none;
+  border: 1px solid #9e7f02;
+  cursor: pointer;
+}
+
+.create-account {
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.create-account:hover {
+  text-decoration: underline;
 }

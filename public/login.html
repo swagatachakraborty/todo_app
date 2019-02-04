@@ -1,34 +1,48 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <title>TODO: Login</title>
+    <title>TODO</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu:300"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <div class="main">
-      <header><h1>Login</h1></header>
-      <div class="form">
-        <form method="POST" action="login">
-          <table>
-            <tr>
-              <td>E-mail:</td>
-              <td><input type="email" name="email" required /></td>
-            </tr>
-            <tr>
-              <td>Password:</td>
-              <td><input type="password" name="password" required /></td>
-            </tr>
-            <tr>
-              <td colspan="2" style="text-align: center">
-                <div id="message"><!--ERROR--></div>
-                <input type="submit" value="Login" /> <input type="reset" />
-              </td>
-            </tr>
-          </table>
-        </form>
-        <div style="text-align: center;">
-          <a href="signup.html" style="font-size: 15px;">Create Account</a>
+    <main>
+      <header>
+        TODO
+      </header>
+
+      <section class="image-and-form">
+        <div class="image-div"></div>
+        <div class="login-div">
+          <div class="login-heading">
+            <h2>Log In To Your Account</h2>
+          </div>
+          <div class="error"><!--ERROR--></div>
+          <!-- <section > -->
+          <form class="login-section" method="POST" action="login">
+            <input
+              class="textboxes"
+              placeholder="Email"
+              type="email"
+              name="email"
+              required
+            />
+            <input
+              class="textboxes"
+              placeholder="Password"
+              type="password"
+              name="password"
+              required
+            />
+            <button class="buttons">Log in</button>
+            <a class="create-account" href="/signup.html">Create Account</a>
+          </form>
+          <!-- </section> -->
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   </body>
 </html>

@@ -4,6 +4,11 @@ const createCache = function(fs) {
 
   publicFiles.forEach(file => {
     const path = "./public/" + file;
+    if (path.endsWith(".jpg")) {
+      cache[path] = fs.readFileSync(path);
+      return;
+    }
+
     cache[path] = fs.readFileSync(path, "utf8");
   });
 
