@@ -2,19 +2,6 @@ const getFilePath = function(url) {
   return "./public" + url;
 };
 
-const send = function(res, content, statusCode = 200) {
-  res.statusCode = statusCode;
-  res.write(content);
-  res.end();
-};
-
-const redirectTo = function(res, location) {
-  res.writeHead(302, {
-    Location: location
-  });
-  res.end();
-};
-
 const decode = function(string = "") {
   string = string.replace(/\+/g, " ");
   return decodeURIComponent(string);
@@ -64,9 +51,7 @@ const getCurrentTodo = function(CURRENTUSER, req) {
 
 module.exports = {
   getFilePath,
-  send,
   parse,
-  redirectTo,
   createInstanceOf,
   setCookie,
   decode,

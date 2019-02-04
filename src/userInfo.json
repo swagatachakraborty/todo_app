@@ -1,17 +1,1 @@
-{
-  "swagata@gmail.com": {
-    "name": "Swagata Chakraborty",
-    "email": "swagata@gmail.com",
-    "password": "sw",
-    "todoList": {
-      "study": {
-        "title": "study",
-        "description": "physics",
-        "items": {
-          "physics": { "value": "physics", "status": true },
-          "chem": { "value": "chem", "status": false }
-        }
-      }
-    }
-  }
-}
+{"swagata@gmail.com":{"name":"Swagata Chakraborty","email":"swagata@gmail.com","password":"sw","todoList":{"j":{"title":"j","description":"s","items":{}}}},"tusharst30999@gmail.com":{"name":"Tushar Tambe","email":"tusharst30999@gmail.com","password":"tu","todoList":{}},"hello@hello.com":{"name":"hello","email":"hello@hello.com","password":"h","todoList":{"j":{"title":"j","description":"jg","items":{}}}},"a@a.com":{"name":"a","email":"a@a.com","password":"a","todoList":{}},"h1@h.com":{"name":"hello","email":"h1@h.com","password":"a","todoList":{"j":{"title":"j","description":"skjh","items":{"sciuh":{"value":"sciuh","status":false}}}}}}

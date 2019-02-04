@@ -1,7 +1,4 @@
 const {
-  getFilePath,
-  send,
-  redirectTo,
   parse,
   createInstanceOf,
   isInvalidPassWord,
@@ -15,14 +12,14 @@ const { User } = require("./user");
 const { Todo } = require("./todo");
 const { Item } = require("./item");
 
-const LOGIN_PAGE = "./public/login.html";
-const SIGNUP_PAGE = "./public/signup.html";
+const LOGIN_PAGE = "./public/htmls/login.html";
+const SIGNUP_PAGE = "./public/htmls/signup.html";
 const ACCOUNT_NOT_FOUND = "Account not found. Sign up.";
 const ACCOUNT_ALREADY_EXISTS = "Account already exist. Log in.";
 const INVALID_PASSWORD = "Password is incorrect.";
 const USER_INFO = "./src/userInfo.json";
-const TODO_HOME = "./public/todo.html";
-const EDIT_TODO = "./public/editTodo.html";
+const TODO_HOME = "./public/htmls/todo.html";
+const EDIT_TODO = "./public/htmls/editTodo.html";
 
 let CURRENTUSER = new User();
 
@@ -41,26 +38,20 @@ const loadCookies = function(req, res, next) {
   next();
 };
 
-const checkSession = function(req, res, next) {
-  if (
-    req.url == "/" ||
-    req.url == "/login.html" ||
-    req.url == "/signup.html" ||
-    req.url == "/style.css" ||
-    req.url == "/favicon.ico" ||
-    req.url == "/login" ||
-    req.url == "/signup"
-  ) {
+const createCheckSession = function(urls) {
+  return function(req, res, next) {
+    if (urls.includes(req.url)) {
+      next();
+      return;
+    }
+
+    if (!req.cookies.email) {
+      logout(req, res);
+      return;
+    }
+
     next();
-    return;
-  }
-
-  if (!req.cookies["email"]) {
-    logout(req, res);
-    return;
-  }
-
-  next();
+  };
 };
 
 const setCurrentUser = function(users, req, res, next) {
@@ -79,28 +70,19 @@ const logger = function(req, res, next) {
   next();
 };
 
-const serveFile = function(FILES_CACHE, req, res) {
-  const url = getFilePath(req.url);
-  if (FILES_CACHE[url]) {
-    send(res, FILES_CACHE[url]);
-    return;
-  }
-  send(res, "404 Not found", 404);
-};
-
 const signUp = function(FILES_CACHE, fs, users, req, res) {
   const { name, email, password } = parse(req.body);
   const user = new User(name, email, password);
   const signupHtml = FILES_CACHE[SIGNUP_PAGE];
 
   if (users[email]) {
-    send(res, signupHtml.replace("<!--ERROR-->", ACCOUNT_ALREADY_EXISTS));
+    res.send(signupHtml.replace("<!--ERROR-->", ACCOUNT_ALREADY_EXISTS));
     return;
   }
 
   users[email] = user;
   fs.writeFile(USER_INFO, JSON.stringify(users), "utf8", err => {});
-  redirectTo(res, "/login.html");
+  res.redirect("/login.html");
 };
 
 const login = function(FILES_CACHE, users, req, res) {
@@ -108,22 +90,22 @@ const login = function(FILES_CACHE, users, req, res) {
   const { email, password } = parse(req.body);
 
   if (!users[email]) {
-    send(res, loginHtml.replace("<!--ERROR-->", ACCOUNT_NOT_FOUND));
+    res.send(loginHtml.replace("<!--ERROR-->", ACCOUNT_NOT_FOUND));
     return;
   }
 
   if (isInvalidPassWord(User, users[email], password)) {
-    send(res, loginHtml.replace("<!--ERROR-->", INVALID_PASSWORD));
+    res.send(loginHtml.replace("<!--ERROR-->", INVALID_PASSWORD));
     return;
   }
 
   setCookie(res, "email", email);
-  redirectTo(res, "/");
+  res.redirect("/");
 };
 
 const renderHome = function(FILES_CACHE, req, res) {
   if (!CURRENTUSER.getEmail()) {
-    redirectTo(res, "/login.html");
+    res.redirect("/login.html");
     return;
   }
 
@@ -132,7 +114,7 @@ const renderHome = function(FILES_CACHE, req, res) {
   const homepage = fileContent
     .replace("<!--TODOLIST-->", todoList)
     .replace("<!--USER-->", CURRENTUSER.getName());
-  send(res, homepage);
+  res.send(homepage);
 };
 
 const addTodo = function(users, req, res) {
@@ -140,12 +122,12 @@ const addTodo = function(users, req, res) {
   CURRENTUSER.addTodo(new Todo(title, description));
   users[CURRENTUSER.getEmail()] = CURRENTUSER;
   setCookie(res, "currentTodo", title);
-  redirectTo(res, "/editTodo.html");
+  res.redirect("/editTodo.html");
 };
 
 const editTodo = function(FILES_CACHE, req, res) {
   if (!req.cookies["currentTodo"]) {
-    redirectTo(res, "/");
+    res.redirect("/");
     return;
   }
 
@@ -158,7 +140,7 @@ const editTodo = function(FILES_CACHE, req, res) {
     .replace("<!--TITLE-->", currentTodo.title)
     .replace("<!--DESCRIPTION-->", currentTodo.description)
     .replace("<!--ITEMS-->", itemsView);
-  send(res, todoHTML);
+  res.send(todoHTML);
 };
 
 const addItem = function(req, res) {
@@ -167,7 +149,7 @@ const addItem = function(req, res) {
   const newItem = new Item(req.body);
   currentTodo.addItem(newItem);
   const content = createItemsView(currentTodo.items);
-  send(res, content);
+  res.send(content);
 };
 
 const changeItemState = function(req, res) {
@@ -180,13 +162,13 @@ const deleteItem = function(req, res) {
   const currentTodo = createInstanceOf(Todo, getCurrentTodo(CURRENTUSER, req));
   currentTodo.deleteItem(req.body);
   const content = createItemsView(currentTodo.items);
-  send(res, content);
+  res.send(content);
 };
 
 const deleteTodo = function(req, res) {
   delete CURRENTUSER.todoList[req.body];
   const todoListHtml = todoListsHtml(CURRENTUSER);
-  send(res, todoListHtml);
+  res.send(todoListHtml);
 };
 
 const changeItem = function(req, res) {
@@ -195,7 +177,7 @@ const changeItem = function(req, res) {
   currentTodo.deleteItem(oldItem);
   currentTodo.addItem(new Item(newItem));
   const content = createItemsView(currentTodo.items);
-  send(res, content);
+  res.send(content);
 };
 
 const saveUser = function(users, fs, req, res) {
@@ -205,24 +187,26 @@ const saveUser = function(users, fs, req, res) {
 };
 
 const logout = function(req, res) {
-  res.setHeader("Set-Cookie", [
-    "email=;expires=Thu, 01 Jan 1970 00:00:00 UTC",
-    "currentTodo=;expires=Thu, 01 Jan 1970 00:00:00 UTC"
-  ]);
-  redirectTo(res, "/");
+  // res.setHeader("Set-Cookie", [
+  //   "email=;expires=Thu, 01 Jan 1970 00:00:00 UTC",
+  //   "currentTodo=;expires=Thu, 01 Jan 1970 00:00:00 UTC"
+  // ]);
+
+  res.clearCookie("email");
+  res.clearCookie("currentTodo");
+  res.redirect("/");
 };
 
 const setCurrentTodo = function(req, res) {
   const { currentTodo } = parse(req.body);
   res.setHeader("Set-Cookie", `currentTodo=${currentTodo}`);
-  redirectTo(res, "/editTodo.html");
+  res.redirect("/editTodo.html");
 };
 
 module.exports = {
-  serveFile,
   logger,
   loadCookies,
-  checkSession,
+  createCheckSession,
   readBody,
   signUp,
   login,
