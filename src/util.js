@@ -1,7 +1,3 @@
-const getFilePath = function(url) {
-  return "./public" + url;
-};
-
 const decode = function(string = "") {
   string = string.replace(/\+/g, " ");
   return decodeURIComponent(string);
@@ -50,7 +46,6 @@ const getCurrentTodo = function(CURRENTUSER, req) {
 };
 
 module.exports = {
-  getFilePath,
   parse,
   createInstanceOf,
   setCookie,
