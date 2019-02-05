@@ -4,7 +4,10 @@ const addItem = function() {
   if (!newItemValue) return;
   fetch("/addItem", {
     method: "POST",
-    body: newItemValue
+    body: `newItem=${newItemValue}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   })
     .then(response => {
       newItem.value = "";
@@ -18,14 +21,20 @@ const addItem = function() {
 const toggleState = function(item) {
   fetch("/changeItemState", {
     method: "POST",
-    body: item
+    body: `item=${item}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   });
 };
 
 const deleteItem = function(item) {
   fetch("/deleteItem", {
     method: "POST",
-    body: item
+    body: `item=${item}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   })
     .then(res => {
       return res.text();
@@ -47,7 +56,10 @@ const saveChanges = function(previous) {
   const newItem = document.getElementById(previous + "Edit").value;
   fetch("/changeItem", {
     method: "POST",
-    body: `oldItem=${previous}&newItem=${newItem}`
+    body: `oldItem=${previous}&newItem=${newItem}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   })
     .then(res => {
       return res.text();

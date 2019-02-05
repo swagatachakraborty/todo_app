@@ -8,7 +8,10 @@ const displayEditTodo = function() {
 const deleteTodo = function(todo) {
   fetch("/deleteTodo", {
     method: "POST",
-    body: todo
+    body: `todo=${todo}`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
   })
     .then(res => {
       return res.text();

@@ -1,18 +1,3 @@
-const decode = function(string = "") {
-  string = string.replace(/\+/g, " ");
-  return decodeURIComponent(string);
-};
-
-const parse = function(content = "") {
-  let keyValPairs = content.split("&");
-  let user = {};
-  keyValPairs.forEach(element => {
-    const [key, value] = element.split("=");
-    user[key.trim()] = decode(value).trim();
-  });
-  return user;
-};
-
 const createInstanceOf = function(protoClass, object) {
   if (!object) return;
   object.__proto__ = protoClass.prototype;
@@ -46,10 +31,8 @@ const getCurrentTodo = function(CURRENTUSER, req) {
 };
 
 module.exports = {
-  parse,
   createInstanceOf,
   setCookie,
-  decode,
   parseCookies,
   getCurrentTodo,
   isInvalidPassWord

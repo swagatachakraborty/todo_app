@@ -23,15 +23,6 @@ const EDIT_TODO = "./public/htmls/editTodo.html";
 
 let CURRENTUSER = new User();
 
-const readBody = function(req, res, next) {
-  let content = "";
-  req.on("data", data => (content += data));
-  req.on("end", () => {
-    req.body = content;
-    next();
-  });
-};
-
 const loadCookies = function(req, res, next) {
   const cookie = req.headers["cookie"];
   req.cookies = parseCookies(cookie);
@@ -71,7 +62,8 @@ const logger = function(req, res, next) {
 };
 
 const signUp = function(FILES_CACHE, fs, users, req, res) {
-  const { name, email, password } = parse(req.body);
+  const { name, email, password } = req.body;
+
   const user = new User(name, email, password);
   const signupHtml = FILES_CACHE[SIGNUP_PAGE];
 
@@ -87,7 +79,8 @@ const signUp = function(FILES_CACHE, fs, users, req, res) {
 
 const login = function(FILES_CACHE, users, req, res) {
   let loginHtml = FILES_CACHE[LOGIN_PAGE];
-  const { email, password } = parse(req.body);
+
+  const { email, password } = req.body;
 
   if (!users[email]) {
     res.send(loginHtml.replace("<!--ERROR-->", ACCOUNT_NOT_FOUND));
@@ -118,7 +111,7 @@ const renderHome = function(FILES_CACHE, req, res) {
 };
 
 const addTodo = function(users, req, res) {
-  const { title, description } = parse(req.body);
+  const { title, description } = req.body;
   CURRENTUSER.addTodo(new Todo(title, description));
   users[CURRENTUSER.getEmail()] = CURRENTUSER;
   setCookie(res, "currentTodo", title);
@@ -145,8 +138,10 @@ const editTodo = function(FILES_CACHE, req, res) {
 
 const addItem = function(req, res) {
   const selectedTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
+  console.log(req.body);
+
   const currentTodo = createInstanceOf(Todo, selectedTodo);
-  const newItem = new Item(req.body);
+  const newItem = new Item(req.body.newItem);
   currentTodo.addItem(newItem);
   const content = createItemsView(currentTodo.items);
   res.send(content);
@@ -154,25 +149,25 @@ const addItem = function(req, res) {
 
 const changeItemState = function(req, res) {
   const currentTodo = getCurrentTodo(CURRENTUSER, req);
-  const currentItem = createInstanceOf(Item, currentTodo.items[req.body]);
+  const currentItem = createInstanceOf(Item, currentTodo.items[req.body.item]);
   currentItem.toggleStatus();
 };
 
 const deleteItem = function(req, res) {
   const currentTodo = createInstanceOf(Todo, getCurrentTodo(CURRENTUSER, req));
-  currentTodo.deleteItem(req.body);
+  currentTodo.deleteItem(req.body.item);
   const content = createItemsView(currentTodo.items);
   res.send(content);
 };
 
 const deleteTodo = function(req, res) {
-  delete CURRENTUSER.todoList[req.body];
+  delete CURRENTUSER.todoList[req.body.todo];
   const todoListHtml = todoListsHtml(CURRENTUSER);
   res.send(todoListHtml);
 };
 
 const changeItem = function(req, res) {
-  const { oldItem, newItem } = parse(req.body);
+  const { oldItem, newItem } = req.body;
   const currentTodo = createInstanceOf(Todo, getCurrentTodo(CURRENTUSER, req));
   currentTodo.deleteItem(oldItem);
   currentTodo.addItem(new Item(newItem));
@@ -187,18 +182,13 @@ const saveUser = function(users, fs, req, res) {
 };
 
 const logout = function(req, res) {
-  // res.setHeader("Set-Cookie", [
-  //   "email=;expires=Thu, 01 Jan 1970 00:00:00 UTC",
-  //   "currentTodo=;expires=Thu, 01 Jan 1970 00:00:00 UTC"
-  // ]);
-
   res.clearCookie("email");
   res.clearCookie("currentTodo");
   res.redirect("/");
 };
 
 const setCurrentTodo = function(req, res) {
-  const { currentTodo } = parse(req.body);
+  const { currentTodo } = req.body;
   res.setHeader("Set-Cookie", `currentTodo=${currentTodo}`);
   res.redirect("/editTodo.html");
 };
@@ -207,7 +197,6 @@ module.exports = {
   logger,
   loadCookies,
   createCheckSession,
-  readBody,
   signUp,
   login,
   renderHome,

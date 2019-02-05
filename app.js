@@ -2,6 +2,7 @@ const fs = require("fs");
 const users = require("./src/userInfo.json");
 
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 8080;
@@ -9,7 +10,6 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 const { createCache } = require("./src/cache");
 const {
-  readBody,
   logger,
   loadCookies,
   createCheckSession,
@@ -42,7 +42,10 @@ const urls = [
 ];
 
 app.use(loadCookies);
-app.use(readBody);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(logger);
 app.use(createCheckSession(urls));
 app.use(setCurrentUser.bind(null, users));
