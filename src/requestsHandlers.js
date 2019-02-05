@@ -1,9 +1,6 @@
 const {
-  parse,
   createInstanceOf,
   isInvalidPassWord,
-  setCookie,
-  parseCookies,
   getCurrentTodo
 } = require("./util");
 
@@ -22,12 +19,6 @@ const TODO_HOME = "./public/htmls/todo.html";
 const EDIT_TODO = "./public/htmls/editTodo.html";
 
 let CURRENTUSER = new User();
-
-const loadCookies = function(req, res, next) {
-  const cookie = req.headers["cookie"];
-  req.cookies = parseCookies(cookie);
-  next();
-};
 
 const createCheckSession = function(urls) {
   return function(req, res, next) {
@@ -92,7 +83,7 @@ const login = function(FILES_CACHE, users, req, res) {
     return;
   }
 
-  setCookie(res, "email", email);
+  res.cookie("email", email);
   res.redirect("/");
 };
 
@@ -114,7 +105,7 @@ const addTodo = function(users, req, res) {
   const { title, description } = req.body;
   CURRENTUSER.addTodo(new Todo(title, description));
   users[CURRENTUSER.getEmail()] = CURRENTUSER;
-  setCookie(res, "currentTodo", title);
+  res.cookie("currentTodo", title);
   res.redirect("/editTodo.html");
 };
 
@@ -195,7 +186,6 @@ const setCurrentTodo = function(req, res) {
 
 module.exports = {
   logger,
-  loadCookies,
   createCheckSession,
   signUp,
   login,
