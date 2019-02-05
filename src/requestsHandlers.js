@@ -14,7 +14,7 @@ const SIGNUP_PAGE = "./public/htmls/signup.html";
 const ACCOUNT_NOT_FOUND = "Account not found. Sign up.";
 const ACCOUNT_ALREADY_EXISTS = "Account already exist. Log in.";
 const INVALID_PASSWORD = "Password is incorrect.";
-const USER_INFO = "./src/userInfo.json";
+const USER_INFO = "./private/userInfo.json";
 const TODO_HOME = "./public/htmls/todo.html";
 const EDIT_TODO = "./public/htmls/editTodo.html";
 
@@ -54,7 +54,6 @@ const logger = function(req, res, next) {
 
 const signUp = function(FILES_CACHE, fs, users, req, res) {
   const { name, email, password } = req.body;
-
   const user = new User(name, email, password);
   const signupHtml = FILES_CACHE[SIGNUP_PAGE];
 
@@ -70,7 +69,6 @@ const signUp = function(FILES_CACHE, fs, users, req, res) {
 
 const login = function(FILES_CACHE, users, req, res) {
   let loginHtml = FILES_CACHE[LOGIN_PAGE];
-
   const { email, password } = req.body;
 
   if (!users[email]) {
@@ -129,8 +127,6 @@ const editTodo = function(FILES_CACHE, req, res) {
 
 const addItem = function(req, res) {
   const selectedTodo = CURRENTUSER.todoList[req.cookies["currentTodo"]];
-  console.log(req.body);
-
   const currentTodo = createInstanceOf(Todo, selectedTodo);
   const newItem = new Item(req.body.newItem);
   currentTodo.addItem(newItem);

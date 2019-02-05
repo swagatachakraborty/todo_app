@@ -6,6 +6,8 @@
   "scripts": {
     "test": "mocha --recursive"
   },
+  "start": "node app.js",
+  "run": "node app.js",
   "author": "",
   "license": "ISC",
   "dependencies": {

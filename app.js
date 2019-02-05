@@ -1,5 +1,16 @@
 const fs = require("fs");
-const users = require("./src/userInfo.json");
+
+const loadUsers = fs => {
+  const path = "./private/userInfo.json";
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync("./private");
+    fs.writeFileSync(path, "{}", err => {});
+  }
+  const usersDetail = fs.readFileSync(path, "utf8");
+  return JSON.parse(usersDetail);
+};
+
+const users = loadUsers(fs);
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -44,8 +55,8 @@ const urls = [
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 app.use(logger);
+
 app.use(createCheckSession(urls));
 app.use(setCurrentUser.bind(null, users));
 app.get("/", renderHome.bind(null, FILES_CACHE));
