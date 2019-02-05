@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "mocha --recursive"
   },
-  "start": "node app.js",
-  "run": "node app.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
